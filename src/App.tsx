@@ -1,25 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import app from './App.module.css'
+import AppHeader from './components/AppHeader/AppHeader';
+import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients';
+import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AppHeader></AppHeader>
+      <main className={`${app.container} pb-10`}>
+        <BurgerIngredients></BurgerIngredients>
+        <BurgerConstructor></BurgerConstructor>
+      </main>
+    </>
   );
 }
 
