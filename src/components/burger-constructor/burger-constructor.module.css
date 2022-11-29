@@ -1,9 +1,10 @@
 .list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 16px;
     list-style: none;
     padding: 0;
+    margin: 16px 0;
 }
 
 .listItem {
@@ -28,7 +29,7 @@
 
 .menu {
     overflow-y: auto;
-    max-height: 100vh;
+    max-height: calc(100vh - 530px);
     scrollbar-color: #6969dd #e0e0e0;
     scrollbar-width: thin;
 }

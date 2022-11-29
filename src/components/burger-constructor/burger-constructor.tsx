@@ -1,28 +1,47 @@
-import PropTypes from 'prop-types';
-import burgerConstructor from './BurgerConstructor.module.css'
+import burgerConstructor from './burger-constructor.module.css'
 import { CurrencyIcon,  ConstructorElement, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import data from '../../utils/data.js'
 
 const BurgerConstructor = () => {
+    let burgerTop = data[0]
+    let burgerbottom = data[data.length - 1]
 
     return (
-        <div className='pl-4 pr-4 pt-25'>
+        <section className='pl-4 pr-4 pt-25'>
+            <div className='pl-8 pr-4'>
+                <ConstructorElement
+                    type='top'
+                    isLocked={true}
+                    text={burgerTop.name}
+                    price={burgerTop.price}
+                    thumbnail={burgerTop.image_mobile}
+                    />            
+            </div>
             <ul className={`${burgerConstructor.list} ${burgerConstructor.menu}`}>
                 {data.map((item,index) => 
-                    <li className={burgerConstructor.listItem}>
+                    index !== 0 && index !== data.length-1 &&
+                    (<li className={burgerConstructor.listItem} key={item._id}>
                         <div className={burgerConstructor.listIcon}>
                             <DragIcon type="primary" />
                         </div>
                         <ConstructorElement
-                            type={index === 0 ? 'top' : index === data.length - 1 ? 'bottom' : undefined}
-                            isLocked={true}
                             text={item.name}
                             price={item.price}
                             thumbnail={item.image_mobile}
                             />
-                    </li>
+                    </li>)
                 )}
             </ul>
+            <div className='pl-8 pr-4'>
+                <ConstructorElement
+                    extraClass={burgerConstructor.listItem}
+                    type='bottom'
+                    isLocked={true}
+                    text={burgerbottom.name}
+                    price={burgerbottom.price}
+                    thumbnail={burgerbottom.image_mobile}
+                    />             
+            </div>
             <div className={`${burgerConstructor.totalBox} mt-10`}>
                 <p className='mr-10'>
                     <span className='text text_type_digits-medium mr-2'>610</span>
@@ -32,15 +51,8 @@ const BurgerConstructor = () => {
                     Оформить заказ
                 </Button>
             </div>
-        </div>
+        </section>
     );
 };
-
-
-BurgerConstructor.propTypes = {
-    text: PropTypes.string,
-    price: PropTypes.number,
-    thumbnail: PropTypes.string
-}; 
 
 export default BurgerConstructor;

@@ -4,7 +4,7 @@
 
 .menu {
     overflow-y: auto;
-    max-height: 100vh;
+    max-height: calc(100vh - 300px);
     scrollbar-color: #6969dd #e0e0e0;
     scrollbar-width: thin;
 }
@@ -30,6 +30,7 @@
     grid-template-columns: repeat( auto-fill, 268px );
     grid-gap: 32px 24px;
     padding: 0 16px 40px;
+    list-style: none;
 }
 
 .menuItem {
