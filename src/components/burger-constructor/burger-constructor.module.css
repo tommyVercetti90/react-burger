@@ -1,0 +1,47 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+.listItem {
+    display: flex;
+    align-items: center;
+    padding: 0 8px 0 32px;
+    position: relative;
+}
+
+.listIcon {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+}
+
+.totalBox {
+    display: flex;
+    margin-left: auto;
+    float: right;
+}
+
+.menu {
+    overflow-y: auto;
+    max-height: calc(100vh - 530px);
+    scrollbar-color: #6969dd #e0e0e0;
+    scrollbar-width: thin;
+}
+
+.menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background: #8585AD;
+}
+
+.menu::-webkit-scrollbar-track {
+    background: #2F2F37;
+}

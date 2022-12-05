@@ -1,0 +1,51 @@
+.tabs {
+    display: flex;
+}
+
+.menu {
+    overflow-y: auto;
+    max-height: calc(100vh - 300px);
+    scrollbar-color: #6969dd #e0e0e0;
+    scrollbar-width: thin;
+}
+
+.menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background: #8585AD;
+}
+
+.menu::-webkit-scrollbar-track {
+    background: #2F2F37;
+}
+
+.title {
+    margin-top: 0;
+}
+
+.menuItems {
+    display: grid;
+    grid-template-columns: repeat( auto-fill, 268px );
+    grid-gap: 32px 24px;
+    padding: 0 16px 40px;
+    list-style: none;
+}
+
+.menuItem {
+    position: relative;
+    padding: 0 16px;
+}
+
+.menuItemCurrency {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.menuItemName {
+    min-height: 48px;
+    vertical-align: top;
+    text-align: center;
+}
