@@ -13,24 +13,25 @@ function App() {
   const [data, setData] = useState([]);
   const _API = 'https://norma.nomoreparties.space/api/ingredients'
 
-
   useEffect(() => {
     fetch(_API)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          setData(result.data);
-        },
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
+      .then(res => {
+        if (res.ok) {
+            return res.json();
         }
-      )
+        return Promise.reject(`Ошибка ${res.status}`);
+      })
+      .then((result) => {
+        setData(result.data);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => setIsLoaded(true))
   }, [])
 
   return (
-    <div style={{position:'relative'}}>
+    <div className={app.appWrapper}>
       <AppHeader/>
       <main className={`${app.container} pb-10`}>
         <BurgerIngredients data={data} />

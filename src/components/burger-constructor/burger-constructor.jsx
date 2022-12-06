@@ -61,14 +61,14 @@ const BurgerConstructor = (data) => {
                 </Button>
             </div>
             {visible && (<Modal onClose={closeModal}>
-                <OrderDetails></OrderDetails>
+                <OrderDetails />
             </Modal>)}
         </section>
     );
 };
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object)
+    data: PropTypes.arrayOf(PropTypes.object).isRequired
   }; 
 
 export default BurgerConstructor;
