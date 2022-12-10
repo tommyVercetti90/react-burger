@@ -3,8 +3,8 @@ import app from './app.module.css'
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { constructorContext } from '../../services/constructorContext';
 import {useState, useEffect} from 'react'
-
 
 
 function App() {
@@ -35,7 +35,9 @@ function App() {
       <AppHeader/>
       <main className={`${app.container} pb-10`}>
         <BurgerIngredients data={data} />
-        <BurgerConstructor data={data} />
+        <constructorContext.Provider value={data}>
+          <BurgerConstructor />
+        </constructorContext.Provider>
       </main>
     </div>
   );

@@ -1,20 +1,66 @@
 import burgerConstructor from './burger-constructor.module.css'
-import {useState} from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { CurrencyIcon,  ConstructorElement, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import PropTypes from 'prop-types';
+import { constructorContext } from '../../services/constructorContext';
 
-const BurgerConstructor = (data) => {
-    let burgerBun = data.data[0]
+const BurgerConstructor = () => {
+    const _API_ORDERS = 'https://norma.nomoreparties.space/api/orders'
     const [visible, setVisible] = useState(false)
+    const [orderDetails, setOrderDetails] = useState()
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const data = useContext(constructorContext)
+    let burgerBun = data[0]
+    let total = 0
+    let ingredientsId = []
+    let orderNum = orderDetails?.order?.number
+
     const openModal = () => {
         setVisible(true)
     }
-  
     const closeModal = () => {
         setVisible(false)
     }
+    const getTotalprice = () => {
+        data.map(item => total += item.price)
+    }
+
+    getTotalprice()
+
+    const getIdOrders = () => {
+        data.forEach(element => {
+            ingredientsId.push(element._id)
+        });
+    }
+    
+    useEffect(()=> {
+        getIdOrders()
+    },[data])
+    
+    useEffect(() => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({"ingredients": ingredientsId})
+        };
+        fetch(_API_ORDERS, requestOptions)
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
+            .then((result) => {
+                setOrderDetails(result)
+              })
+            .catch((error) => {
+                setError(error);
+            })
+            .finally(() => setIsLoaded(true))
+    }, [data]);
+
     return (
         <section className='pl-4 pt-25'>
             <div className='pl-8 pr-4'>
@@ -27,8 +73,8 @@ const BurgerConstructor = (data) => {
                     />            
             </div>
             <ul className={`${burgerConstructor.list} ${burgerConstructor.menu}`}>
-                {data.data.map((item,index) => 
-                    index !== 0 && index !== data.data.length-1 &&
+                {data.map((item,index) => 
+                    index !== 0 && index !== data.length-1 && item.type !== 'bun' &&
                     (<li className={burgerConstructor.listItem} key={item._id}>
                         <div className={burgerConstructor.listIcon}>
                             <DragIcon type="primary" />
@@ -53,7 +99,7 @@ const BurgerConstructor = (data) => {
             </div>
             <div className={`${burgerConstructor.totalBox} mt-10`}>
                 <p className='mr-10'>
-                    <span className='text text_type_digits-medium mr-2'>610</span>
+                    <span className='text text_type_digits-medium mr-2'>{total}</span>
                     <CurrencyIcon type="primary"/>
                 </p>
                 <Button type="primary" size="medium" htmlType={'button'} onClick={openModal}>
@@ -61,14 +107,10 @@ const BurgerConstructor = (data) => {
                 </Button>
             </div>
             {visible && (<Modal onClose={closeModal}>
-                <OrderDetails />
+                <OrderDetails orderNum={orderNum}/>
             </Modal>)}
         </section>
     );
 };
-
-BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object).isRequired
-  }; 
 
 export default BurgerConstructor;
