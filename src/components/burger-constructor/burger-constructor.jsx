@@ -1,5 +1,5 @@
 import burgerConstructor from './burger-constructor.module.css'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useMemo } from 'react'
 import { CurrencyIcon,  ConstructorElement, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
@@ -22,16 +22,14 @@ const BurgerConstructor = () => {
     // в задании сказано что 'В теле запроса нужно передать _id всех ингредиентов, которые находятся в компоненте BurgerConstructor.'
     // Видимо пока drag не реализовали то данные можно брать из data, а потом уже из массива элементов которые драгом перетащили в заказ.
     // p.s ревью у тебя четкие, кармическое спасибо тебе за терпение при ревею :)
+
+    const getIdOrders = useMemo(
+        () =>
+        data.filter(element => ingredientsId.push(element._id)),
+        [data]
+      );
     
-    const getIdOrders = () => {
-        data.forEach(element => {
-            ingredientsId.push(element._id)
-        });
-    }
-
     const openModal = () => {
-        getIdOrders()
-
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

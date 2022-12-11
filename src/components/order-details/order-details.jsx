@@ -1,7 +1,8 @@
 import orderDetails  from './order-details.module.css'
 import checkImage from '../../images/check.svg'
+import PropTypes from 'prop-types';
 
-const OrderDetails  = (data) => {
+const OrderDetails = (data) => {
     return (
         <div className={`${orderDetails.wrapper} pt-10 pr-25 pb-30 pl-25`}>
             <p className={`${orderDetails.code} text text_type_digits-large mb-8`}>{data.orderNum}</p>
@@ -12,5 +13,10 @@ const OrderDetails  = (data) => {
         </div>
     );
 };
+
+
+OrderDetails.propTypes = {
+    data: PropTypes.object,
+  };
 
 export default OrderDetails ;
