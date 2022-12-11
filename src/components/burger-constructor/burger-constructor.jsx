@@ -3,23 +3,53 @@ import { useState, useContext, useEffect } from 'react'
 import { CurrencyIcon,  ConstructorElement, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { constructorContext } from '../../services/constructorContext';
+import { ConstructorContext } from '../../services/constructor-context';
+import {BASE_URL} from '../../constants/constants'
+import {request} from '../../utils/check-response'
 
 const BurgerConstructor = () => {
-    const _API_ORDERS = 'https://norma.nomoreparties.space/api/orders'
+    const _API_ORDERS = BASE_URL+'orders'
     const [visible, setVisible] = useState(false)
     const [orderDetails, setOrderDetails] = useState()
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const data = useContext(constructorContext)
+    const data = useContext(ConstructorContext)
     let burgerBun = data[0]
     let total = 0
     let ingredientsId = []
     let orderNum = orderDetails?.order?.number
 
+    // в задании сказано что 'В теле запроса нужно передать _id всех ингредиентов, которые находятся в компоненте BurgerConstructor.'
+    // Видимо пока drag не реализовали то данные можно брать из data, а потом уже из массива элементов которые драгом перетащили в заказ.
+    // p.s ревью у тебя четкие, кармическое спасибо тебе за терпение при ревею :)
+    
+    const getIdOrders = () => {
+        data.forEach(element => {
+            ingredientsId.push(element._id)
+        });
+    }
+
     const openModal = () => {
+        getIdOrders()
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({"ingredients": ingredientsId})
+        }
+
+        request(_API_ORDERS,requestOptions)
+            .then((result) => {
+                setOrderDetails(result)
+              })
+              .catch((error) => {
+                  setError(error);
+                })
+                .finally(() => setIsLoaded(true))
+
         setVisible(true)
     }
+            
     const closeModal = () => {
         setVisible(false)
     }
@@ -28,39 +58,7 @@ const BurgerConstructor = () => {
     }
 
     getTotalprice()
-
-    const getIdOrders = () => {
-        data.forEach(element => {
-            ingredientsId.push(element._id)
-        });
-    }
     
-    useEffect(()=> {
-        getIdOrders()
-    },[data])
-    
-    useEffect(() => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({"ingredients": ingredientsId})
-        };
-        fetch(_API_ORDERS, requestOptions)
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка ${res.status}`);
-            })
-            .then((result) => {
-                setOrderDetails(result)
-              })
-            .catch((error) => {
-                setError(error);
-            })
-            .finally(() => setIsLoaded(true))
-    }, [data]);
-
     return (
         <section className='pl-4 pt-25'>
             <div className='pl-8 pr-4'>
