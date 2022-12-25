@@ -36,6 +36,7 @@
 .menuItem {
     position: relative;
     padding: 0 16px;
+    cursor: pointer;
 }
 
 .menuItemCurrency {
