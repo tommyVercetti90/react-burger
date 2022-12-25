@@ -1,15 +1,15 @@
-import {useState} from 'react'
+import {useState,useContext} from 'react'
 import burgerIngredients from './burger-ingredients.module.css'
 import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import PropTypes from 'prop-types';
+import { ConstructorContext } from '../../services/constructor-context';
 
-const BurgerIngredients = (data) => {
+const BurgerIngredients = () => {
     const [current, setCurrent] = useState('one')
     const [visible, setVisible] = useState(false)
     const [ingredientDetails, setIngredientDetails] = useState({})
-
+    const data = useContext(ConstructorContext)
     const openModal = () => {
         setVisible(true)
     }
@@ -40,7 +40,7 @@ const BurgerIngredients = (data) => {
                     <>
                         <h3 className={`${burgerIngredients.title}text_type_main-medium menu__title mt-10`}>Булки</h3>
                         <ul className={burgerIngredients.menuItems}>
-                        {  data.data.map(item => 
+                        {  data.map(item => 
                             item.type === 'bun' &&
                             <li className={burgerIngredients.menuItem} key={item._id} onClick={()=> {openModal();getDetails(item)}}>
                                 <img src={item.image} alt={item.name} />
@@ -59,7 +59,7 @@ const BurgerIngredients = (data) => {
                     <>
                         <h3 className={`${burgerIngredients.title}text_type_main-medium menu__title mt-10`}>Начинки</h3>
                         <ul className={burgerIngredients.menuItems}>
-                            { data.data.map(item => 
+                            { data.map(item => 
                                 item.type === 'main' && 
                                 <li className={burgerIngredients.menuItem} key={item._id} onClick={()=> {openModal();getDetails(item)}}>
                                     <img src={item.image}alt={item.name} />
@@ -78,7 +78,7 @@ const BurgerIngredients = (data) => {
                     <>
                         <h3 className={`${burgerIngredients.title}text_type_main-medium menu__title mt-10`}>Соусы</h3>
                         <ul className={burgerIngredients.menuItems}>
-                            { data.data.map(item => 
+                            { data.map(item => 
                                 item.type === 'sauce' && 
                                 <li className={burgerIngredients.menuItem} key={item._id} onClick={()=> {openModal();getDetails(item)}}>
                                     <img src={item.image}alt={item.name} />
@@ -100,9 +100,5 @@ const BurgerIngredients = (data) => {
         </section>
         )
 };
-
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object).isRequired
-  }; 
 
 export default BurgerIngredients;
