@@ -3,7 +3,7 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import burgerConstructor from './burger-constructor.module.css'
 import { useDispatch,useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
-import { REMOVE_INGREDIENT } from '../../services/actions/actions';
+import { REMOVE_INGREDIENT } from '../../services/actions/constructor';
 
 const BurgerConstructorIngredient = ({ ingredient, index, moveIngredient }) => {
     const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const BurgerConstructorIngredient = ({ ingredient, index, moveIngredient }) => {
             payload: ingredientUuid
         })
     }
-    const constructorIngredients = useSelector(store => store.constructorIngredients);
+    const constructorIngredients = useSelector(store => store.constructorReducer.constructorIngredients);
 
     const id = ingredient.ingredientUuid
 

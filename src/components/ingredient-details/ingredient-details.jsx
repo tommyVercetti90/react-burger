@@ -2,7 +2,7 @@ import ingredientStyle from './ingredient-details.module.css'
 import {useSelector, useDispatch} from 'react-redux'
 
 const IngredientDetails = () => {
-    const ingredientDetails = useSelector(store => store.ingredient)
+    const ingredientDetails = useSelector(store => store.ingredientsReducer.ingredient)
 
     return (
         <div className={`${ingredientStyle.wrapper} pb-15`}>

@@ -4,16 +4,14 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDrag } from "react-dnd"
 import { useSelector } from 'react-redux'
 
-const BurgerIngredientItem = (props) => {
-    const { _id, name,price,image,type } = props.data
-
+const BurgerIngredientItem = ({ _id, name,price,image,type }) => {
     const {constructorIngredients, bun} = useSelector(store => 
         ({
-            constructorIngredients: store.constructorIngredients,
-            bun: store.constructorBun
+            constructorIngredients: store.constructorReducer.constructorIngredients,
+            bun: store.constructorReducer.constructorBun
         }))
 
-    const[count, setCount] = useState()  
+    const[count, setCount] = useState(0)  
     
     const [, dragRef] = useDrag({
         type: "ingredient",
@@ -30,7 +28,7 @@ const BurgerIngredientItem = (props) => {
                 break
         }
     },[constructorIngredients, bun]) 
-
+    
     return (
         <li 
             ref={dragRef}
@@ -41,7 +39,7 @@ const BurgerIngredientItem = (props) => {
                 <span className='ml-1'>{price}</span>
             </p>
             <p className={`${burgerIngredients.menuItemName} text text_type_main-default`}>{name}</p>
-            <Counter count={count} size="default" />
+            {count > 0 && <Counter count={count} size="default" />}
         </li>
     )
 }

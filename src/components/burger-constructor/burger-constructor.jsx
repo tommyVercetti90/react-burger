@@ -1,24 +1,21 @@
+/* eslint-disable no-lone-blocks */
 import burgerConstructor from './burger-constructor.module.css'
 import { useState, useMemo } from 'react'
 import { CurrencyIcon,  ConstructorElement, Button, } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal'
 import BurgerConstructorIngredient from './burger-constructor-ingredient'
 import OrderDetails from '../order-details/order-details'
-import { clearDataOrder, getOrderDetails, addIngredientToConstructor, addBunToConstructor, sortIngredients } from '../../services/actions/actions'
+import { addIngredientToConstructor, addBunToConstructor, sortIngredients,clearIngredients } from '../../services/actions/constructor'
+import { clearOrderNum, getOrderDetails } from '../../services/actions/order'
 import {useSelector, useDispatch} from 'react-redux'
 import { useDrop } from "react-dnd"
-
+ 
 const BurgerConstructor = () => {
     const [visible, setVisible] = useState(false)
     const dispatch = useDispatch()
-    const ingredients = useSelector(store => store.ingredients)
-    const constructorIngredients = useSelector(store => store.constructorIngredients)
-    const bun = useSelector(store => store.constructorBun)
-    let totalIngredientPrice = 0
-    let totalBunPrice = 0
-    let ingredientsId = []
-    
-    const order = useSelector(store => store.orderDetails)
+    const ingredients = useSelector(store => store.ingredientsReducer.ingredients)
+    const constructorIngredients = useSelector(store => store.constructorReducer.constructorIngredients)
+    const bun = useSelector(store => store.constructorReducer.constructorBun)
 
     const [, dropTarget] = useDrop({
         accept: "ingredient",
@@ -27,38 +24,30 @@ const BurgerConstructor = () => {
             item.type === "bun" ? dispatch(addBunToConstructor(item)) : dispatch(addIngredientToConstructor(item))
         }
     })
+    console.log(constructorIngredients)
+    const getIdIngredients = () => {
+      const ingredientsId = [];
+      constructorIngredients.map(component => ingredientsId.push(component._id))
+      if(bun) {
+        ingredientsId.unshift(bun._id)
+        ingredientsId.push(bun._id)
+      }   
+      return ingredientsId
+    }
 
-    const getIdIngredients = useMemo(
-        () =>
-        constructorIngredients.filter(element => ingredientsId.push(element._id)),
-        [constructorIngredients,bun]
-      )
-
-    const getIdBuns = useMemo(
-        () =>
-        {if(bun) ingredientsId.push(bun._id)},
-        [constructorIngredients, bun]
-      )
-
-    const getTotalIngredientPrice = useMemo(
-        () =>
-        constructorIngredients.map(item => totalIngredientPrice += item.price),
-        [constructorIngredients,bun]
-      )
-      
-    const getTotalBunPrice = useMemo(
-        () =>
-        {if(bun) totalBunPrice += bun.price * 2},
-        [bun,constructorIngredients]
-      )
+    const totalPrice = useMemo(
+      () => 
+        constructorIngredients?.reduce((acc, item) => acc + item.price, bun?.price * 2), 
+        [constructorIngredients, bun])
 
     const openModal = () => {
-        dispatch(getOrderDetails(ingredientsId))
+        dispatch(getOrderDetails(getIdIngredients()))
         setVisible(true)
     }
             
     const closeModal = () => {
-        dispatch(clearDataOrder())
+        dispatch(clearOrderNum())
+        dispatch(clearIngredients())
         setVisible(false)
     }
     const moveIngredient = (dragIndex, hoverIndex, constructorIngredients) => {
@@ -100,15 +89,20 @@ const BurgerConstructor = () => {
             </div>
             <div className={`${burgerConstructor.totalBox} mt-10`}>
                 <p className='mr-10'>
-                    <span className='text text_type_digits-medium mr-2'>{totalBunPrice+totalIngredientPrice}</span>
+                    <span className='text text_type_digits-medium mr-2'>{totalPrice || 0}</span>
                     <CurrencyIcon type="primary"/>
                 </p>
-                <Button type="primary" size="medium" htmlType={'button'} onClick={openModal}>
+                <Button 
+                    disabled={!constructorIngredients.length>0 && bun === null}
+                    type="primary" 
+                    size="medium" 
+                    htmlType={'button'} 
+                    onClick={openModal}>
                     Оформить заказ
                 </Button>
             </div>
             {visible && (<Modal onClose={closeModal}>
-                <OrderDetails orderNum={order}/>
+                <OrderDetails />
             </Modal>)}
         </section>
     );

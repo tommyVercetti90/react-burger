@@ -5,14 +5,14 @@ import IngredientDetails from '../ingredient-details/ingredient-details'
 import Modal from '../modal/modal'
 import BurgerIngredientItem from './burger-ingredient-item'
 import {useSelector, useDispatch} from 'react-redux'
-import { getIngredient } from '../../services/actions/actions'
-import { fetchIngredients, clearDataModal } from '../../services/actions/actions'
+import { getIngredient } from '../../services/actions/ingredients'
+import { fetchIngredients, clearDataModal } from '../../services/actions/ingredients'
 
 
 const BurgerIngredients = () => {
     const dispatch = useDispatch()
     const [visible, setVisible] = useState(false)
-    const ingredients = useSelector(store => store.ingredients)
+    const ingredients = useSelector(store => store.ingredientsReducer.ingredients)
     const [currentTab, setCurrentTab] = useState("bun")
 
     const containerRef = useRef()
@@ -88,42 +88,51 @@ const BurgerIngredients = () => {
                 </Tab>
             </div>
             <div className={`${burgerIngredients.menu} mt-10`} ref={containerRef} onScroll={handleScroll}>
-                <>
-                    <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={bunsRef}>Булки</h3>
-                    <ul className={burgerIngredients.menuItems}>
-                    {  ingredients.map(item => 
-                        item.type === 'bun' && 
-                            <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
-                                <BurgerIngredientItem data={item}/>
-                            </div>)                       
+                <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={bunsRef}>Булки</h3>
+                <ul className={burgerIngredients.menuItems}>
+                {  ingredients.map(item => 
+                    item.type === 'bun' && 
+                        <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
+                            <BurgerIngredientItem 
+                                _id={item._id}
+                                name={item.name}
+                                price={item.price}
+                                image={item.image}
+                                type={item.type}/>
+                        </div>)                       
+                }
+                </ul>
+                <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={saucesRef}>Соусы</h3>
+                <ul className={burgerIngredients.menuItems}>
+                    { ingredients.map(item => 
+                        item.type === 'sauce' && 
+                        <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
+                            <BurgerIngredientItem 
+                                _id={item._id}
+                                name={item.name}
+                                price={item.price}
+                                image={item.image}
+                                type={item.type}/>
+                        </div>)
                     }
-                    </ul>
-                </>
-                <>
-                    <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={saucesRef}>Соусы</h3>
-                    <ul className={burgerIngredients.menuItems}>
-                        { ingredients.map(item => 
-                            item.type === 'sauce' && 
-                            <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
-                                <BurgerIngredientItem data={item}/>
-                            </div>)
-                        }
-                    </ul>
-                </>
-                <>
-                    <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={mainRef}>Начинки</h3>
-                    <ul className={burgerIngredients.menuItems}>
-                        { ingredients.map(item => 
-                            item.type === 'main' && 
-                            <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
-                                <BurgerIngredientItem data={item}/>
-                            </div>)
-                        }
-                    </ul>
-                </>
+                </ul>
+                <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={mainRef}>Начинки</h3>
+                <ul className={burgerIngredients.menuItems}>
+                    { ingredients.map(item => 
+                        item.type === 'main' && 
+                        <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
+                            <BurgerIngredientItem 
+                                _id={item._id}
+                                name={item.name}
+                                price={item.price}
+                                image={item.image}
+                                type={item.type}/>
+                        </div>)
+                    }
+                </ul>
             </div>
             {visible && (<Modal onClose={closeModal} title={'Детали ингредиента'}>
-                <IngredientDetails></IngredientDetails>
+                <IngredientDetails />
             </Modal>)}
         </section>
         )
