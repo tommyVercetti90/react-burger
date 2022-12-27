@@ -24,7 +24,7 @@ const BurgerConstructor = () => {
             item.type === "bun" ? dispatch(addBunToConstructor(item)) : dispatch(addIngredientToConstructor(item))
         }
     })
-    console.log(constructorIngredients)
+    
     const getIdIngredients = () => {
       const ingredientsId = [];
       constructorIngredients.map(component => ingredientsId.push(component._id))
