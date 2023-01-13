@@ -1,12 +1,12 @@
 import { BASE_URL } from "../constants"
-import { request } from "../../utils/check-response"
+import { request } from "../../utils/burger-api"
 export const INGREDIENT_DETAILS = 'INGREDIENT_DETAILS'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
 export const FETCH_INGREDIENTS_REQUEST = 'FETCH_INGREDIENTS_REQUEST'
 export const FETCH_INGREDIENTS_SUCCESS = 'FETCH_INGREDIENTS_SUCCESS'
 export const FETCH_INGREDIENTS_ERROR = 'FETCH_INGREDIENTS_ERROR'
 
-const _API_INGREDIENTS = BASE_URL+'ingredients'
+const _API_INGREDIENTS = BASE_URL+'/ingredients'
 
 export const fetchIngredients = () => (dispatch) => {
     dispatch({type:FETCH_INGREDIENTS_REQUEST})

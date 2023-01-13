@@ -27,18 +27,18 @@ const BurgerIngredientItem = ({ _id, name,price,image,type }) => {
                 setCount(constructorIngredients.filter((draggedItem) => draggedItem._id === _id).length)
                 break
         }
-    },[constructorIngredients, bun]) 
+    },[constructorIngredients, bun, type, _id]) 
     
     return (
         <li 
             ref={dragRef}
             className={burgerIngredients.menuItem}>
             <img src={image} alt={image} />
-            <p className={`${burgerIngredients.menuItemCurrency} text text_type_digits-default`}>
+            <p className={`${burgerIngredients.menuItemCurrency}`}>
+                <span className='mr-2'>{price}</span>
                 <CurrencyIcon type="primary" />
-                <span className='ml-1'>{price}</span>
             </p>
-            <p className={`${burgerIngredients.menuItemName} text text_type_main-default`}>{name}</p>
+            <p className={`${burgerIngredients.menuItemName}`}>{name}</p>
             {count > 0 && <Counter count={count} size="default" />}
         </li>
     )

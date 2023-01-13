@@ -9,13 +9,16 @@ import { addIngredientToConstructor, addBunToConstructor, sortIngredients,clearI
 import { clearOrderNum, getOrderDetails } from '../../services/actions/order'
 import {useSelector, useDispatch} from 'react-redux'
 import { useDrop } from "react-dnd"
+import { useHistory } from 'react-router-dom';
  
 const BurgerConstructor = () => {
+    const history = useHistory();
     const [visible, setVisible] = useState(false)
     const dispatch = useDispatch()
     const ingredients = useSelector(store => store.ingredientsReducer.ingredients)
     const constructorIngredients = useSelector(store => store.constructorReducer.constructorIngredients)
     const bun = useSelector(store => store.constructorReducer.constructorBun)
+    const { user } = useSelector(store => store.userReducer);
 
     const [, dropTarget] = useDrop({
         accept: "ingredient",
@@ -41,8 +44,12 @@ const BurgerConstructor = () => {
         [constructorIngredients, bun])
 
     const openModal = () => {
-        dispatch(getOrderDetails(getIdIngredients()))
-        setVisible(true)
+        if (user) {
+            dispatch(getOrderDetails(getIdIngredients()))
+            setVisible(true)
+        } else {
+            history.push({pathname: '/login'});
+        }
     }
             
     const closeModal = () => {

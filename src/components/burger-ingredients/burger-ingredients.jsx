@@ -7,9 +7,10 @@ import BurgerIngredientItem from './burger-ingredient-item'
 import {useSelector, useDispatch} from 'react-redux'
 import { getIngredient } from '../../services/actions/ingredients'
 import { fetchIngredients, clearDataModal } from '../../services/actions/ingredients'
-
+import { Link, useLocation } from 'react-router-dom'
 
 const BurgerIngredients = () => {
+    const location = useLocation()
     const dispatch = useDispatch()
     const [visible, setVisible] = useState(false)
     const ingredients = useSelector(store => store.ingredientsReducer.ingredients)
@@ -91,49 +92,55 @@ const BurgerIngredients = () => {
                 <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={bunsRef}>Булки</h3>
                 <ul className={burgerIngredients.menuItems}>
                 {  ingredients.map(item => 
-                    item.type === 'bun' && 
-                        <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
+                    item.type === 'bun' &&
+                        <Link 
+                            to={{pathname: `ingredients/${item._id}`, state: {background: location}}} 
+                            key={item._id} >
                             <BurgerIngredientItem 
                                 _id={item._id}
                                 name={item.name}
                                 price={item.price}
                                 image={item.image}
                                 type={item.type}/>
-                        </div>)                       
+                        </Link>)                       
                 }
                 </ul>
                 <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={saucesRef}>Соусы</h3>
                 <ul className={burgerIngredients.menuItems}>
                     { ingredients.map(item => 
                         item.type === 'sauce' && 
-                        <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
+                        <Link 
+                            to={{pathname: `ingredients/${item._id}`, state: {background: location}}} 
+                            key={item._id} >
                             <BurgerIngredientItem 
                                 _id={item._id}
                                 name={item.name}
                                 price={item.price}
                                 image={item.image}
                                 type={item.type}/>
-                        </div>)
+                        </Link>)
                     }
                 </ul>
                 <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={mainRef}>Начинки</h3>
                 <ul className={burgerIngredients.menuItems}>
                     { ingredients.map(item => 
                         item.type === 'main' && 
-                        <div onClick={()=> {openModal();getDetails(item)}} key={item._id} >
+                        <Link 
+                            to={{pathname: `ingredients/${item._id}`, state: {background: location}}} 
+                            key={item._id} >
                             <BurgerIngredientItem 
                                 _id={item._id}
                                 name={item.name}
                                 price={item.price}
                                 image={item.image}
                                 type={item.type}/>
-                        </div>)
+                        </Link>)
                     }
                 </ul>
             </div>
-            {visible && (<Modal onClose={closeModal} title={'Детали ингредиента'}>
+            {/* {visible && (<Modal onClose={closeModal} title={'Детали ингредиента'}>
                 <IngredientDetails />
-            </Modal>)}
+            </Modal>)} */}
         </section>
         )
 };

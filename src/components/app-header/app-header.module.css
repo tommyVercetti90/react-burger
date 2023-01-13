@@ -19,3 +19,7 @@
 .login {
     margin-left: auto;
 }
+
+.linkActive span {
+    color: white !important;
+}
