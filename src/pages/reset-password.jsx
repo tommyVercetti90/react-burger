@@ -14,11 +14,11 @@ const ResetPassword = () => {
     const { resetFailure, resetSuccess, fargotSuccess, resetRequest, status } = useSelector(store => store.resetPasswordReducer);
   
     const [password, setPassword] = useState('')
-
     const [emailCode, setEmailCode] = useState('')
   
-    const postNewPassword = () => {
-      dispatch(postResetPassword(password, emailCode, history))
+    const postNewPassword = (e) => {
+        e.preventDefault();
+        dispatch(postResetPassword(password, emailCode, history))
     }
 
     return (
@@ -26,7 +26,7 @@ const ResetPassword = () => {
             { !fargotSuccess ? <Redirect to={ location.state?.from || '/' } /> :
                 <div className={`${login.wrapper}`}>
                     <h3 className={'text text_type_main-medium mb-6'}>Восстановление пароля</h3>
-                    <form>
+                    <form onSubmit={postNewPassword}>
                         <PasswordInput
                             value={password}
                             onChange={e => setPassword(e.target.value)}
@@ -41,10 +41,9 @@ const ResetPassword = () => {
                         { resetRequest && <p className="text text_type_main-default">{status}</p>}
                         { resetSuccess && <p className="text text_type_main-default">{status}</p>}
                         <Button 
-                            htmlType="button" 
+                            htmlType="submit" 
                             type="primary" 
-                            size="medium" 
-                            onClick={() => postNewPassword()}>
+                            size="medium">
                                 Сохранить
                         </Button>
                     </form>

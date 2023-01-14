@@ -13,12 +13,6 @@ const IngredientDetails = () => {
 
     useEffect(
       () => {
-        dispatch(fetchIngredients())
-      }, []
-    );
-  
-    useEffect(
-      () => {
         if (ingredients.length) {
           dispatch(setCurrentIngredient(ingredients.find(item => item._id === id)));
         }

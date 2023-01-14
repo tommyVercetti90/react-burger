@@ -8,13 +8,9 @@ export const checkResponse = (res) => {
   return Promise.reject(`Ошибка ${res}`);
 }
 
-export const request = (url, options) => {
-  return fetch(url, options).then(checkResponse)
-}
-
 export const apiRequest = (url, options) => {
   return fetch(`${BASE_URL}/${url}`, options)
-  .then(response => response.json())
+  .then(checkResponse)
   .then(data => {
     if (data.success) {
       return data

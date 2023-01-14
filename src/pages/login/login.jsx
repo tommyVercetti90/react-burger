@@ -8,30 +8,26 @@ import { login } from "../../services/actions/user";
 const Login = () => {
     const dispatch = useDispatch()
     const { user } = useSelector(store => store.userReducer);
-
     const history = useHistory();
     const location = useLocation();
   
     const [password, setPassword] = useState('')
-  
     const [email, setEmail] = useState('')
-    const onChange = e => {
-      setEmail(e.target.value)
-    }
   
-    const { status, loginFailure, loginRequest } = useSelector(store => store.userReducer);
+    const { status, loginFailure } = useSelector(store => store.userReducer);
   
-    const onLoginClick = () => {
-      dispatch(login(email, password, history));
+    const handleLogin = (e) => {
+        e.preventDefault();
+        dispatch(login(email, password, history));
     }
     return (
         <>
             { user ? <Redirect to={ location.state?.from || '/' } /> : 
                 <div className={`${loginStyle.wrapper}`}>
                     <h3 className={`text text_type_main-medium mb-6`}>Вход</h3>
-                    <form>
+                    <form onSubmit={handleLogin}>
                         <EmailInput
-                            onChange={onChange}
+                            onChange={e => setEmail(e.target.value)}
                             value={email}
                             extraClass='mb-6'
                             placeholder='E-mail'/>
@@ -42,10 +38,9 @@ const Login = () => {
                             extraClass='mb-6'/>
                         { loginFailure && <p className="text text_type_main-default text_color_error">{status}</p>}
                         <Button 
-                            htmlType="button" 
+                            htmlType="submit" 
                             type="primary" 
-                            size="medium" 
-                            onClick={() => onLoginClick()} 
+                            size="medium"
                             disabled={ email && password ? false : true }>
                                 Войти
                         </Button>

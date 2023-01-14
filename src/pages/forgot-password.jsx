@@ -15,11 +15,9 @@ const ForgotPassword = () => {
     const { user } = useSelector(store => store.userReducer);
     const { forgotRequest, forgotFailed, status } = useSelector(store => store.resetPasswordReducer);
 
-    const onChange = e => {
-        setEmail(e.target.value)
-    }
 
-    const postForgotRequest = () => {
+    const postForgotRequest = (e) => {
+        e.preventDefault();
         dispatch(getForgotPassword(email, history))
     }
 
@@ -28,7 +26,7 @@ const ForgotPassword = () => {
             { user ? <Redirect to={ location.state?.from || '/' } /> : 
                 <div className={`${login.wrapper}`}>
                     <h3 className={'text text_type_main-medium mb-6'}>Восстановление пароля</h3>
-                    <form onSubmit={onChange}>
+                    <form onSubmit={postForgotRequest}>
                         <EmailInput
                             onChange={e => setEmail(e.target.value)}
                             value={email}            
@@ -38,9 +36,8 @@ const ForgotPassword = () => {
                         { forgotRequest && <p className="text text_type_main-default mb-6">{status}</p>}                                             
                         <Button
                             extraClass='mb-5'
-                            htmlType="button" disabled={ email ? false : true } 
-                            type="primary" size="medium" 
-                            onClick={() => postForgotRequest()}>
+                            htmlType="submit" disabled={ email ? false : true } 
+                            type="primary" size="medium">
                                 Восстановить
                         </Button>
                     </form>

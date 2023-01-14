@@ -49,21 +49,6 @@ const BurgerIngredients = () => {
         if(saucesOffset < bunsOffset && saucesOffset < mainOffset) setCurrentTab("sauce")
         if(mainOffset < bunsOffset && mainOffset < saucesOffset) setCurrentTab("main")
     }
-        
-    const openModal = () => {
-        setVisible(true)
-    }
-    const closeModal = () => {
-        dispatch(clearDataModal())
-        setVisible(false)
-    }
-    const getDetails = (item) => {
-        dispatch(getIngredient(item))
-    }
-    useEffect(() => {
-        dispatch(fetchIngredients())
-      }, [dispatch])
-
     
     return (
         <section>
@@ -138,9 +123,6 @@ const BurgerIngredients = () => {
                     }
                 </ul>
             </div>
-            {/* {visible && (<Modal onClose={closeModal} title={'Детали ингредиента'}>
-                <IngredientDetails />
-            </Modal>)} */}
         </section>
         )
 };

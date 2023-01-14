@@ -1,5 +1,5 @@
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useState, useRef} from 'react'
+import { useState } from 'react'
 import login from './login/login.module.css'
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from '../services/actions/user';
@@ -12,17 +12,12 @@ const Register = () => {
     const { user, status, registerFailure, registerSuccess, registerRequest } = useSelector(store => store.userReducer);
   
     const [email, setEmail] = useState('')
-    const onChange = e => {
-      setEmail(e.target.value)
-    }
-  
     const [password, setPassword] = useState('')
-
     const [name, setName] = useState('')
-    const inputNameRef = useRef(null)
   
-    const postRegister = () => {
-      dispatch(registerUser(name, email, password));
+    const postRegister = (e) => {
+        e.preventDefault();
+        dispatch(registerUser(name, email, password));
     };
 
     return (
@@ -30,16 +25,15 @@ const Register = () => {
             { user ? <Redirect to={ location.state?.from || '/' } /> : 
                 <div className={`${login.wrapper}`}>
                     <h3 className={'text text_type_main-medium mb-6'}>Регистрация</h3>
-                    <form>
+                    <form onSubmit={postRegister}>
                         <Input
                             value={name}
                             onChange={e => setName(e.target.value)}
-                            ref={inputNameRef}
                             extraClass='mb-6'
                             placeholder='Имя'/>
                         <EmailInput
                             value={email}
-                            onChange={onChange}
+                            onChange={e => setEmail(e.target.value)}
                             extraClass='mb-6'
                             placeholder='E-mail'/>
                         <PasswordInput
@@ -50,11 +44,10 @@ const Register = () => {
                         { registerRequest && <p className="text text_type_main-default">{status}</p>}
                         { registerSuccess && <p className="text text_type_main-default">{status}</p>}
                         <Button 
-                            htmlType="button" 
+                            htmlType="submit" 
                             disabled={ name && email && password ? false : true} 
                             type="primary" 
-                            size="medium" 
-                            onClick={() => postRegister()}>
+                            size="medium">
                                 Зарегистрироваться
                         </Button>
                     </form>

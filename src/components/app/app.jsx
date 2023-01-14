@@ -13,6 +13,7 @@ import Profile from '../../pages/profile/profile';
 import { getUserInfo } from '../../services/actions/user'
 import { resetCurrentIngredient } from '../../services/actions/current-ingredient';
 import Modal from '../modal/modal';
+import { fetchIngredients } from '../../services/actions/ingredients';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import NotFoundPage from '../../pages/not-found-404/not-found-404';
 import { useHistory, useLocation, Switch, Route } from 'react-router-dom';
@@ -21,7 +22,7 @@ function App() {
   const dispatch = useDispatch ();
 
   const location = useLocation();
-  const background = location.state && location.state.background;
+  const background = location.state?.background;
   const history = useHistory();
 
   const ingredientModalClose = () => {
@@ -30,6 +31,7 @@ function App() {
   }
 
   useEffect(() => {
+    dispatch(fetchIngredients())
     dispatch(getUserInfo())
   }, [dispatch]);
 
@@ -38,7 +40,7 @@ function App() {
       <div className={app.appWrapper}>
             <AppHeader/>
             <main className={`${app.container} pb-10`}>
-              <Switch>
+              <Switch location={ background || location }>
                 <Route path="/" exact={true}>
                   <MainPage />
                 </Route>
@@ -60,18 +62,18 @@ function App() {
                 <ProtectedRoute path='/profile/'>
                   <Profile />
                 </ProtectedRoute>
-                { background && <Route path='/ingredients/:id'>
-                <Modal onClose={ingredientModalClose} title={'Детали ингредиента'}> 
+                <Route path='/ingredients/:id'>
                   <IngredientDetails/>
-                </Modal>
-                </Route>}
-                { location && <Route path='/ingredients/:id'>
-                  <IngredientDetails/>
-                </Route>}
+                </Route>
                 <Route path="*">
                   <NotFoundPage />
                 </Route>
               </Switch>
+              { background && <Route path='/ingredients/:id' exact={true}>
+                <Modal onClose={ingredientModalClose} title={'Детали ингредиента'}> 
+                  <IngredientDetails/>
+                </Modal>
+              </Route>}
             </main>
       </div>
     </>
