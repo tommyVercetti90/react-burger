@@ -3,7 +3,7 @@ import checkImage from '../../images/check.svg'
 import {useSelector} from 'react-redux'
 
 const OrderDetails = () => {
-    const order = useSelector(store => store.orderReducer.orderDetails)    
+    const order = useSelector((store:any) => store.orderReducer.orderDetails)    
     
     return (
         <div className={`${orderDetails.wrapper} pt-10 pr-25 pb-30 pl-25`}>

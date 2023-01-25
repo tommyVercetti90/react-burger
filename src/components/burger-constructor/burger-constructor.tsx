@@ -1,6 +1,6 @@
 /* eslint-disable no-lone-blocks */
 import burgerConstructor from './burger-constructor.module.css'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, FC } from 'react'
 import { CurrencyIcon,  ConstructorElement, Button, } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal'
 import BurgerConstructorIngredient from './burger-constructor-ingredient'
@@ -10,27 +10,29 @@ import { clearOrderNum, getOrderDetails } from '../../services/actions/order'
 import {useSelector, useDispatch} from 'react-redux'
 import { useDrop } from "react-dnd"
 import { useHistory } from 'react-router-dom';
- 
+import { TIngredient } from '../../utils/types'
+
 const BurgerConstructor = () => {
     const history = useHistory();
-    const [visible, setVisible] = useState(false)
+    const [visible, setVisible] = useState<boolean>(false)
     const dispatch = useDispatch()
-    const ingredients = useSelector(store => store.ingredientsReducer.ingredients)
-    const constructorIngredients = useSelector(store => store.constructorReducer.constructorIngredients)
-    const bun = useSelector(store => store.constructorReducer.constructorBun)
-    const { user } = useSelector(store => store.userReducer);
+    const ingredients = useSelector((store: any) => store.ingredientsReducer.ingredients)
+    const constructorIngredients = useSelector((store: any) => store.constructorReducer.constructorIngredients)
+    const bun = useSelector((store: any) => store.constructorReducer.constructorBun)
+    const { user } = useSelector((store: any) => store.userReducer);
 
     const [, dropTarget] = useDrop({
         accept: "ingredient",
-        drop(itemId) {
-            const item = ingredients.find(item => item._id === itemId._id)
+        drop(itemId: any) {
+            const item = ingredients.find((item:any) => item._id === itemId._id)
+            //@ts-ignore
             item.type === "bun" ? dispatch(addBunToConstructor(item)) : dispatch(addIngredientToConstructor(item))
         }
     })
     
     const getIdIngredients = () => {
       const ingredientsId = [];
-      constructorIngredients.map(component => ingredientsId.push(component._id))
+      constructorIngredients.map((component:any) => ingredientsId.push(component._id))
       if(bun) {
         ingredientsId.unshift(bun._id)
         ingredientsId.push(bun._id)
@@ -40,11 +42,12 @@ const BurgerConstructor = () => {
 
     const totalPrice = useMemo(
       () => 
-        constructorIngredients?.reduce((acc, item) => acc + item.price, bun?.price * 2), 
+        constructorIngredients?.reduce((acc: any, item: { price: number }) => acc + item.price, bun?.price * 2), 
         [constructorIngredients, bun])
 
     const openModal = () => {
         if (user) {
+            //@ts-ignore
             dispatch(getOrderDetails(getIdIngredients()))
             setVisible(true)
         } else {
@@ -57,7 +60,10 @@ const BurgerConstructor = () => {
         dispatch(clearIngredients())
         setVisible(false)
     }
+    
+    //@ts-ignore
     const moveIngredient = (dragIndex, hoverIndex, constructorIngredients) => {
+        //@ts-ignore
         dispatch(sortIngredients(dragIndex, hoverIndex, constructorIngredients))
     }
 
@@ -75,7 +81,7 @@ const BurgerConstructor = () => {
                         />            
                 </div>): null}
                 <ul className={`${burgerConstructor.list} ${burgerConstructor.menu}`}>
-                    {constructorIngredients.map((item,index) => 
+                    {constructorIngredients.map((item: TIngredient & { key: any; ingredientUuid: any },index: number) => 
                         item.type !== 'bun' &&
                         <BurgerConstructorIngredient
                             index={index}
@@ -100,7 +106,7 @@ const BurgerConstructor = () => {
                     <CurrencyIcon type="primary"/>
                 </p>
                 <Button 
-                    disabled={!constructorIngredients.length>0 && bun === null}
+                    disabled={!(constructorIngredients.length > 0) && bun === null}
                     type="primary" 
                     size="medium" 
                     htmlType={'button'} 

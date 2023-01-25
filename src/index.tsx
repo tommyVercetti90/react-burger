@@ -10,7 +10,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 const store = initStore()
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root')
+  document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>

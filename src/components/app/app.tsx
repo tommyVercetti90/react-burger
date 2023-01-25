@@ -22,6 +22,7 @@ function App() {
   const dispatch = useDispatch ();
 
   const location = useLocation();
+  //@ts-ignore
   const background = location.state?.background;
   const history = useHistory();
 
@@ -31,7 +32,9 @@ function App() {
   }
 
   useEffect(() => {
+    //@ts-ignore
     dispatch(fetchIngredients())
+    //@ts-ignore
     dispatch(getUserInfo())
   }, [dispatch]);
 

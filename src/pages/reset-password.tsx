@@ -1,23 +1,25 @@
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import login from './login/login.module.css'
 import {useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Link, useHistory, useLocation } from 'react-router-dom';
-import { postResetPassword } from "../services/actions/reset-password"; 
+import { useDispatch, useSelector } from 'react-redux'
+import { Redirect, Link, useHistory, useLocation } from 'react-router-dom'
+import { postResetPassword } from "../services/actions/reset-password" 
+import { TLocationWithFrom } from "../utils/types"
 
 const ResetPassword = () => {
-    const history = useHistory();
-    const location = useLocation();
+    const history = useHistory()
+    const location = useLocation<TLocationWithFrom>()
   
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
   
-    const { resetFailure, resetSuccess, fargotSuccess, resetRequest, status } = useSelector(store => store.resetPasswordReducer);
+    const { resetFailure, resetSuccess, fargotSuccess, resetRequest, status } = useSelector((store: any) => store.resetPasswordReducer)
   
-    const [password, setPassword] = useState('')
-    const [emailCode, setEmailCode] = useState('')
+    const [password, setPassword] = useState<string>('')
+    const [emailCode, setEmailCode] = useState<string>('')
   
-    const postNewPassword = (e) => {
-        e.preventDefault();
+    const postNewPassword = (e: React.FormEvent) => {
+        e.preventDefault()
+        //@ts-ignore
         dispatch(postResetPassword(password, emailCode, history))
     }
 
@@ -51,7 +53,7 @@ const ResetPassword = () => {
                 </div>
             }
         </>
-    );
-};
+    )
+}
 
-export default ResetPassword;
+export default ResetPassword

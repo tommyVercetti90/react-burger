@@ -1,24 +1,26 @@
-import { useState } from "react";
+import { useState } from "react"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import loginStyle from './login.module.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
-import { login } from "../../services/actions/user";
+import { Link, Redirect, useHistory, useLocation } from 'react-router-dom'
+import { login } from "../../services/actions/user"
+import { TLocationWithFrom } from "../../utils/types";
 
 const Login = () => {
     const dispatch = useDispatch()
-    const { user } = useSelector(store => store.userReducer);
-    const history = useHistory();
-    const location = useLocation();
+    const { user } = useSelector((store: any) => store.userReducer)
+    const history = useHistory()
+    const location = useLocation<TLocationWithFrom>()
   
-    const [password, setPassword] = useState('')
-    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
   
-    const { status, loginFailure } = useSelector(store => store.userReducer);
+    const { status, loginFailure } = useSelector((store: any) => store.userReducer)
   
-    const handleLogin = (e) => {
-        e.preventDefault();
-        dispatch(login(email, password, history));
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault()
+        //@ts-ignore
+        dispatch(login(email, password, history))
     }
     return (
         <>
@@ -50,7 +52,7 @@ const Login = () => {
                 </div>
             }
         </>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

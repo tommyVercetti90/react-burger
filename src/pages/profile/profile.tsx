@@ -32,6 +32,7 @@ const Profile = () => {
                         exact={true} 
                         className={profileStyle.link} 
                         to={{ pathname: '/login' }}  
+                        //@ts-ignore
                         onClick={() => dispatch(logout(history))} 
                         activeClassName={profileStyle.activeLink}>
                             Выход

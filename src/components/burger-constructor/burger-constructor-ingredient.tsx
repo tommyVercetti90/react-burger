@@ -1,25 +1,40 @@
-import { useRef } from 'react';
+import { FC, useRef } from 'react'
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructor from './burger-constructor.module.css'
-import { useDispatch,useSelector } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd';
-import { REMOVE_INGREDIENT } from '../../services/actions/constructor';
+import { useDispatch,useSelector } from 'react-redux'
+import { useDrag, useDrop } from 'react-dnd'
+import { REMOVE_INGREDIENT } from '../../services/actions/constructor'
+import { TIngredient } from '../../utils/types'
+import type { Identifier, XYCoord } from 'dnd-core'
 
-const BurgerConstructorIngredient = ({ ingredient, index, moveIngredient }) => {
-    const dispatch = useDispatch();
-    const onRemoveItem = (ingredientUuid) => {
+type TSelectedIngredientType = TIngredient & { key: any, ingredientUuid: any  }
+
+type TConstructorItemProps = {
+    ingredient: TSelectedIngredientType
+    index: number
+    moveIngredient: any
+}
+type DragItem = {
+    index: number
+    id: string
+    type: string
+}
+  
+const BurgerConstructorIngredient: FC<TConstructorItemProps> = ({ ingredient, index, moveIngredient }) => {
+    const dispatch = useDispatch()
+    const onRemoveItem = (ingredientUuid: string) => {
         dispatch({
             type: REMOVE_INGREDIENT,
             payload: ingredientUuid
         })
     }
-    const constructorIngredients = useSelector(store => store.constructorReducer.constructorIngredients);
+    const constructorIngredients = useSelector((store: any) => store.constructorReducer.constructorIngredients)
 
     const id = ingredient.ingredientUuid
 
-    const ref = useRef(null)
+    const ref = useRef<HTMLLIElement>(null)
 
-    const [{ handlerId}, drop] = useDrop({
+    const [{ handlerId}, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
         accept: "sort",
         collect(monitor) {
             return {
@@ -39,7 +54,7 @@ const BurgerConstructorIngredient = ({ ingredient, index, moveIngredient }) => {
             const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
             const clientOffset = monitor.getClientOffset()
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+            const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return
@@ -48,7 +63,7 @@ const BurgerConstructorIngredient = ({ ingredient, index, moveIngredient }) => {
                 return
             }
 
-            moveIngredient(dragIndex, hoverIndex, constructorIngredients);
+            moveIngredient(dragIndex, hoverIndex, constructorIngredients)
 
             item.index = hoverIndex
         }
@@ -83,7 +98,7 @@ const BurgerConstructorIngredient = ({ ingredient, index, moveIngredient }) => {
                 thumbnail={ingredient.image_mobile}
             />
         </li>
-    );
-};
+    )
+}
 
-export default BurgerConstructorIngredient;
+export default BurgerConstructorIngredient

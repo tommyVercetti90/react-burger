@@ -3,24 +3,24 @@ import ingredientStyle from './ingredient-details.module.css'
 import {useSelector,useDispatch} from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { setCurrentIngredient } from '../../services/actions/current-ingredient';
-import { fetchIngredients } from '../../services/actions/ingredients';
+import { TIngredient, TParams } from '../../utils/types';
 
 const IngredientDetails = () => {
     const dispatch = useDispatch();
 
-    const { id } = useParams(); 
-    const ingredients = useSelector(store => store.ingredientsReducer.ingredients);
+    const { id } = useParams<TParams>(); 
+    const ingredients = useSelector((store:any) => store.ingredientsReducer.ingredients);
 
     useEffect(
       () => {
         if (ingredients.length) {
-          dispatch(setCurrentIngredient(ingredients.find(item => item._id === id)));
+          dispatch(setCurrentIngredient(ingredients.find((item: TIngredient) => item._id === id)));
         }
   
       }, [dispatch, ingredients]
     );
   
-    const { currentIngredient } = useSelector(store => store.currentIngredientReducer)
+    const { currentIngredient } = useSelector((store:any) => store.currentIngredientReducer)
 
     return (
         <div className={`${ingredientStyle.wrapper} pb-15`}>
