@@ -1,0 +1,14 @@
+.wrapper {
+    max-width: 480px;
+    margin: 180px auto 0;
+    text-align: center; 
+}
+
+.link {
+    color: #4C4CFF;
+    text-decoration: none;
+}
+.alert {
+    text-align: left;
+    color: red;
+}
