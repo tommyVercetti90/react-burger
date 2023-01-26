@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,ChangeEvent,FormEvent } from "react"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import loginStyle from './login.module.css'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,7 +17,7 @@ const Login = () => {
   
     const { status, loginFailure } = useSelector((store: any) => store.userReducer)
   
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         //@ts-ignore
         dispatch(login(email, password, history))
@@ -29,12 +29,12 @@ const Login = () => {
                     <h3 className={`text text_type_main-medium mb-6`}>Вход</h3>
                     <form onSubmit={handleLogin}>
                         <EmailInput
-                            onChange={e => setEmail(e.target.value)}
+                            onChange={(e:ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                             value={email}
                             extraClass='mb-6'
                             placeholder='E-mail'/>
                         <PasswordInput
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={(e:ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                             placeholder={'Пароль'}
                             value={password}
                             extraClass='mb-6'/>

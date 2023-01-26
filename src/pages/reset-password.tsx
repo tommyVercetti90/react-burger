@@ -1,6 +1,6 @@
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import login from './login/login.module.css'
-import {useState} from 'react'
+import {useState,ChangeEvent,FormEvent} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Link, useHistory, useLocation } from 'react-router-dom'
 import { postResetPassword } from "../services/actions/reset-password" 
@@ -17,7 +17,7 @@ const ResetPassword = () => {
     const [password, setPassword] = useState<string>('')
     const [emailCode, setEmailCode] = useState<string>('')
   
-    const postNewPassword = (e: React.FormEvent) => {
+    const postNewPassword = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         //@ts-ignore
         dispatch(postResetPassword(password, emailCode, history))
@@ -31,12 +31,12 @@ const ResetPassword = () => {
                     <form onSubmit={postNewPassword}>
                         <PasswordInput
                             value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={(e:ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                             placeholder='Введите новый пароль'
                             extraClass='mb-6'/>
                         <Input
                             value={emailCode}
-                            onChange={e => setEmailCode(e.target.value)}
+                            onChange={(e:ChangeEvent<HTMLInputElement>) => setEmailCode(e.target.value)}
                             extraClass='mb-6'
                             placeholder='Введите код из письма'/>
                         { resetFailure && <p className="text text_type_main-default text_color_error">{status}</p>}

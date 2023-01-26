@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route, RouteProps } from 'react-router-dom'
 
-export const ProtectedRoute = ({ children, ...rest }: any) => {
+export const ProtectedRoute = ({ children, ...rest }: RouteProps & {children?: React.ReactNode}) => {
 
   const { user } = useSelector((store:any)=> store.userReducer)
 

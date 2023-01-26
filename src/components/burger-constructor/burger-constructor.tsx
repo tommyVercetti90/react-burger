@@ -23,8 +23,9 @@ const BurgerConstructor = () => {
 
     const [, dropTarget] = useDrop({
         accept: "ingredient",
-        drop(itemId: any) {
-            const item = ingredients.find((item:any) => item._id === itemId._id)
+        drop(itemId: { _id: string }) {
+            const item = ingredients.find((item: { _id: string }) => item._id === itemId._id)
+            console.log(itemId)
             //@ts-ignore
             item.type === "bun" ? dispatch(addBunToConstructor(item)) : dispatch(addIngredientToConstructor(item))
         }
@@ -32,7 +33,7 @@ const BurgerConstructor = () => {
     
     const getIdIngredients = () => {
       const ingredientsId = [];
-      constructorIngredients.map((component:any) => ingredientsId.push(component._id))
+      constructorIngredients.map((component:{_id: string}) => ingredientsId.push(component._id))
       if(bun) {
         ingredientsId.unshift(bun._id)
         ingredientsId.push(bun._id)
@@ -42,10 +43,10 @@ const BurgerConstructor = () => {
 
     const totalPrice = useMemo(
       () => 
-        constructorIngredients?.reduce((acc: any, item: { price: number }) => acc + item.price, bun?.price * 2), 
+        constructorIngredients?.reduce((acc: number, item: { price: number }) => acc + item.price, bun?.price * 2), 
         [constructorIngredients, bun])
 
-    const openModal = () => {
+    const openModal: () => void = () => {
         if (user) {
             //@ts-ignore
             dispatch(getOrderDetails(getIdIngredients()))
@@ -55,7 +56,7 @@ const BurgerConstructor = () => {
         }
     }
             
-    const closeModal = () => {
+    const closeModal: () => void = () => {
         dispatch(clearOrderNum())
         dispatch(clearIngredients())
         setVisible(false)
@@ -81,7 +82,7 @@ const BurgerConstructor = () => {
                         />            
                 </div>): null}
                 <ul className={`${burgerConstructor.list} ${burgerConstructor.menu}`}>
-                    {constructorIngredients.map((item: TIngredient & { key: any; ingredientUuid: any },index: number) => 
+                    {constructorIngredients.map((item: TIngredient & { key: number; ingredientUuid: string },index: number) => 
                         item.type !== 'bun' &&
                         <BurgerConstructorIngredient
                             index={index}

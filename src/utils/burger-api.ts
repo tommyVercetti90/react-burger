@@ -1,7 +1,7 @@
 import { getCookie, setCookie } from "./cookie"; 
 import { BASE_URL } from "../services/constants";
 
-export const checkResponse = (res:any) => {
+export const checkResponse = (res: Response) => {
   if (res.ok) {
       return res.json();
   }

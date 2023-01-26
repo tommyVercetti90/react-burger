@@ -1,5 +1,5 @@
 import { Input,PasswordInput,Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useState, useEffect,ChangeEvent } from 'react'
+import { useState, useEffect,ChangeEvent,FormEvent } from 'react'
 import { getUserInfo, updateUserInfo } from '../../services/actions/user'
 import profileStyle from './profile.module.css'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,13 +41,13 @@ const ProfileForm = () => {
       })
     };
 
-    const postForm = (e: React.FormEvent) => {
+    const postForm = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       //@ts-ignore
       dispatch(updateUserInfo(state));
     };
 
-    const cancelEdit = () => {
+    const cancelEdit: () => void = () => {
       setState({...state, name: name, email: email, password: ''});
     };
 

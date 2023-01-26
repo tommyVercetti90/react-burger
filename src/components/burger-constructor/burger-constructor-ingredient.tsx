@@ -7,7 +7,7 @@ import { REMOVE_INGREDIENT } from '../../services/actions/constructor'
 import { TIngredient } from '../../utils/types'
 import type { Identifier, XYCoord } from 'dnd-core'
 
-type TSelectedIngredientType = TIngredient & { key: any, ingredientUuid: any  }
+type TSelectedIngredientType = TIngredient & { key: number, ingredientUuid: string  }
 
 type TConstructorItemProps = {
     ingredient: TSelectedIngredientType
@@ -29,7 +29,6 @@ const BurgerConstructorIngredient: FC<TConstructorItemProps> = ({ ingredient, in
         })
     }
     const constructorIngredients = useSelector((store: any) => store.constructorReducer.constructorIngredients)
-
     const id = ingredient.ingredientUuid
 
     const ref = useRef<HTMLLIElement>(null)
