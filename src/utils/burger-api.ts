@@ -1,14 +1,14 @@
 import { getCookie, setCookie } from "./cookie"; 
 import { BASE_URL } from "../services/constants";
 
-export const checkResponse = (res) => {
+export const checkResponse = (res: Response) => {
   if (res.ok) {
       return res.json();
   }
   return Promise.reject(`Ошибка ${res}`);
 }
 
-export const apiRequest = (url, options) => {
+export const apiRequest = (url: string, options?: {}) => {
   return fetch(`${BASE_URL}/${url}`, options)
   .then(checkResponse)
   .then(data => {

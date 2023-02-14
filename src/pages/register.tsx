@@ -1,22 +1,24 @@
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useState } from 'react'
+import { useState,ChangeEvent,FormEvent } from 'react'
 import login from './login/login.module.css'
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from '../services/actions/user';
 import { Redirect, Link, useLocation } from 'react-router-dom';
+import { TLocationWithFrom } from "../utils/types";
 
 const Register = () => {
     const dispatch = useDispatch();
-    const location = useLocation();
+    const location = useLocation<TLocationWithFrom>();
   
-    const { user, status, registerFailure, registerSuccess, registerRequest } = useSelector(store => store.userReducer);
+    const { user, status, registerFailure, registerSuccess, registerRequest } = useSelector((store: any) => store.userReducer);
   
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [name, setName] = useState('')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [name, setName] = useState<string>('')
   
-    const postRegister = (e) => {
+    const postRegister = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        //@ts-ignore
         dispatch(registerUser(name, email, password));
     };
 
@@ -28,17 +30,17 @@ const Register = () => {
                     <form onSubmit={postRegister}>
                         <Input
                             value={name}
-                            onChange={e => setName(e.target.value)}
+                            onChange={(e:ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                             extraClass='mb-6'
                             placeholder='Имя'/>
                         <EmailInput
                             value={email}
-                            onChange={e => setEmail(e.target.value)}
+                            onChange={(e:ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                             extraClass='mb-6'
                             placeholder='E-mail'/>
                         <PasswordInput
                             value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={(e:ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                             extraClass='mb-6'/>
                         { registerFailure && <p className="text text_type_main-default text_color_error">{status}</p>}
                         { registerRequest && <p className="text text_type_main-default">{status}</p>}

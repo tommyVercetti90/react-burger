@@ -1,22 +1,28 @@
-import { EmailInput, Input,PasswordInput,Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useState, useEffect } from 'react'
+import { Input,PasswordInput,Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useState, useEffect,ChangeEvent,FormEvent } from 'react'
 import { getUserInfo, updateUserInfo } from '../../services/actions/user'
 import profileStyle from './profile.module.css'
 import { useDispatch, useSelector } from 'react-redux'
+interface IUser {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const ProfileForm = () => {
     const dispatch = useDispatch();
 
-    const { name, email } = useSelector(store => store.userReducer.user);
-    const { editUserSuccess } = useSelector(store => store.userReducer);
+    const { name, email } = useSelector((store: any) => store.userReducer.user);
+    const { editUserSuccess } = useSelector((store: any) => store.userReducer);
     
-    const [state, setState] = useState({
+    const [state, setState] = useState<IUser> ({
       name: '',
       email: '',
       password: ''
     });
 
     useEffect(() => {
+      //@ts-ignore
       dispatch(getUserInfo());
 
       if (name && email) {
@@ -24,7 +30,7 @@ const ProfileForm = () => {
       }
     }, [dispatch, name, email]);
 
-    const hadleInputChange = (evt) => {
+    const hadleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
       const target = evt.target;
       const value = target.value;
       const name = target.name;
@@ -35,13 +41,13 @@ const ProfileForm = () => {
       })
     };
 
-    const postForm = (e) => {
+    const postForm = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-
+      //@ts-ignore
       dispatch(updateUserInfo(state));
     };
 
-    const cancelEdit = () => {
+    const cancelEdit: () => void = () => {
       setState({...state, name: name, email: email, password: ''});
     };
 
@@ -55,7 +61,7 @@ const ProfileForm = () => {
                 icon={'EditIcon'}
                 name='name'
                 placeholder='Имя'/>
-            <EmailInput
+            <Input
                 type={'text'}
                 icon={'EditIcon'}
                 onChange={hadleInputChange}

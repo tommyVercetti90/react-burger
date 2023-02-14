@@ -1,27 +1,21 @@
-import {useState,useEffect,useRef} from 'react'
+import {useState,useRef,FC} from 'react'
 import burgerIngredients from './burger-ingredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import IngredientDetails from '../ingredient-details/ingredient-details'
-import Modal from '../modal/modal'
 import BurgerIngredientItem from './burger-ingredient-item'
-import {useSelector, useDispatch} from 'react-redux'
-import { getIngredient } from '../../services/actions/ingredients'
-import { fetchIngredients, clearDataModal } from '../../services/actions/ingredients'
+import {useSelector} from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
+import { TIngredient } from '../../utils/types'
 
-const BurgerIngredients = () => {
+const BurgerIngredients: FC = () => {
     const location = useLocation()
-    const dispatch = useDispatch()
-    const [visible, setVisible] = useState(false)
-    const ingredients = useSelector(store => store.ingredientsReducer.ingredients)
-    const [currentTab, setCurrentTab] = useState("bun")
+    const ingredients = useSelector((store:any) => store.ingredientsReducer.ingredients)
+    const [currentTab, setCurrentTab] = useState<string>("bun")
+    const containerRef = useRef<HTMLHeadingElement>(null)
+    const bunsRef = useRef<HTMLHeadingElement>(null)
+    const saucesRef = useRef<HTMLHeadingElement>(null)
+    const mainRef = useRef<HTMLHeadingElement>(null)
 
-    const containerRef = useRef()
-    const bunsRef = useRef()
-    const saucesRef = useRef()
-    const mainRef = useRef()
-
-    const setCurrent = (event) => {
+    const setCurrent = (event: string) : void => {
         let tabToScroll;
         switch(event) {
             case 'bun':
@@ -36,13 +30,19 @@ const BurgerIngredients = () => {
             default:
                 break;
         }
+        //@ts-ignore
         tabToScroll.current.scrollIntoView( {behavior: "smooth"} )
         setCurrentTab(event);
     }
+
     const handleScroll = () => {
+        //@ts-ignore
         const containerY = containerRef.current.getBoundingClientRect().y;
+        //@ts-ignore
         const bunsOffset = Math.abs(bunsRef.current.getBoundingClientRect().y - containerY)
+        //@ts-ignore
         const saucesOffset = Math.abs(saucesRef.current.getBoundingClientRect().y - containerY)
+        //@ts-ignore
         const mainOffset = Math.abs(mainRef.current.getBoundingClientRect().y - containerY)
         
         if(bunsOffset < saucesOffset && bunsOffset < mainOffset) setCurrentTab("bun")
@@ -76,7 +76,7 @@ const BurgerIngredients = () => {
             <div className={`${burgerIngredients.menu} mt-10`} ref={containerRef} onScroll={handleScroll}>
                 <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={bunsRef}>Булки</h3>
                 <ul className={burgerIngredients.menuItems}>
-                {  ingredients.map(item => 
+                {  ingredients.map((item: TIngredient) => 
                     item.type === 'bun' &&
                         <Link 
                             to={{pathname: `ingredients/${item._id}`, state: {background: location}}} 
@@ -86,13 +86,14 @@ const BurgerIngredients = () => {
                                 name={item.name}
                                 price={item.price}
                                 image={item.image}
-                                type={item.type}/>
+                                type={item.type}
+                                image_mobile={''}/>
                         </Link>)                       
                 }
                 </ul>
                 <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={saucesRef}>Соусы</h3>
                 <ul className={burgerIngredients.menuItems}>
-                    { ingredients.map(item => 
+                    { ingredients.map((item: TIngredient) => 
                         item.type === 'sauce' && 
                         <Link 
                             to={{pathname: `ingredients/${item._id}`, state: {background: location}}} 
@@ -102,13 +103,14 @@ const BurgerIngredients = () => {
                                 name={item.name}
                                 price={item.price}
                                 image={item.image}
-                                type={item.type}/>
+                                type={item.type}
+                                image_mobile={''}/>
                         </Link>)
                     }
                 </ul>
                 <h3 className={`${burgerIngredients.title} text_type_main-medium menu__title mt-10`} ref={mainRef}>Начинки</h3>
                 <ul className={burgerIngredients.menuItems}>
-                    { ingredients.map(item => 
+                    { ingredients.map((item: TIngredient) => 
                         item.type === 'main' && 
                         <Link 
                             to={{pathname: `ingredients/${item._id}`, state: {background: location}}} 
@@ -118,7 +120,8 @@ const BurgerIngredients = () => {
                                 name={item.name}
                                 price={item.price}
                                 image={item.image}
-                                type={item.type}/>
+                                type={item.type}
+                                image_mobile={''}/>
                         </Link>)
                     }
                 </ul>

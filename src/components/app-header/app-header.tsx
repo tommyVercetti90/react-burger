@@ -4,10 +4,11 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import { NavLink, useRouteMatch } from 'react-router-dom';
 
 const AppHeader = () => {
-    
+
     const activeConstructor = !!useRouteMatch({path: '/', exact: true})
     const activeOrders = !!useRouteMatch({path: '/orders'})
     const activeProfile = !!useRouteMatch({path: '/profile'})
+    //@ts-ignore
     const { user } = useSelector(store => store.userReducer);
     
     return (
