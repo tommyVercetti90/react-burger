@@ -11,6 +11,7 @@ export type TIngredient = {
     image_mobile: string
     image_large?: string
     __v?: number
+    ingredientUuid?: string
 }
 
 export type TParams = {
@@ -25,4 +26,24 @@ export type TModalProps = {
 
 export type TLocationWithFrom = Location & {
   from: string;
+};
+
+export type TUser = {
+  createdAt?: string;
+  email?: string;
+  name?: string;
+  updatedAt?: string;
+  password?: string;
+}
+
+export type TOrder = {
+  createdAt: string;
+  ingredients: TIngredient[];
+  name: string;
+  number: number;
+  owner: TUser;
+  price: number;
+  status: string;
+  updatedAt: string;
+  _id: string;
 };

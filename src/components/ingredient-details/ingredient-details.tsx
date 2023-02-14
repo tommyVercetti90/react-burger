@@ -1,15 +1,16 @@
 import {useEffect} from 'react'
 import ingredientStyle from './ingredient-details.module.css'
-import {useSelector,useDispatch} from 'react-redux'
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { useParams } from 'react-router-dom'
 import { setCurrentIngredient } from '../../services/actions/current-ingredient';
-import { TIngredient, TParams } from '../../utils/types';
+import { TIngredient } from '../../services/types/types';
+import { TParams } from '../../services/types/types';
 
 const IngredientDetails = () => {
     const dispatch = useDispatch();
 
     const { id } = useParams<TParams>(); 
-    const ingredients = useSelector((store:any) => store.ingredientsReducer.ingredients);
+    const {ingredients} = useSelector((store:any) => store.ingredientsReducer);
 
     useEffect(
       () => {
@@ -20,7 +21,7 @@ const IngredientDetails = () => {
       }, [dispatch, ingredients]
     );
   
-    const { currentIngredient } = useSelector((store:any) => store.currentIngredientReducer)
+    const { currentIngredient } = useSelector((store) => store.currentIngredientReducer)
 
     return (
         <div className={`${ingredientStyle.wrapper} pb-15`}>

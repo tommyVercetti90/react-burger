@@ -1,15 +1,23 @@
-import { NavLink, useHistory, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { useLocation, NavLink, useHistory, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { logout } from '../../services/actions/user';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from "../../hooks/hooks";
 import profileStyle from './profile.module.css'
 import ProfileForm from './profile-form'
-import ProfileHistory from './profile-history'
+import OrdersList from '../../components/orders-list/orders-list';
 import { ProtectedRoute } from "../../components/protected-route/protected-route";
-
+import Modal from '../../components/modal/modal';
+import { resetCurrentIngredient } from '../../services/actions/current-ingredient';
+import { OrderInfo } from '../../components/order-info/order-info';
 const Profile = () => {
     const history = useHistory()
     const dispatch = useDispatch();
+    const location = useLocation<{background: Location}>();
+    const background = location.state?.background;
 
+    const ingredientModalClose = () => {
+        dispatch(resetCurrentIngredient())
+        history.goBack();
+      }
     return (
         <Router>
             <div className={`${profileStyle.wrapper} mt-30`}>
@@ -32,7 +40,6 @@ const Profile = () => {
                         exact={true} 
                         className={profileStyle.link} 
                         to={{ pathname: '/login' }}  
-                        //@ts-ignore
                         onClick={() => dispatch(logout(history))} 
                         activeClassName={profileStyle.activeLink}>
                             Выход
@@ -48,12 +55,20 @@ const Profile = () => {
                         <ProfileForm />
                     </ProtectedRoute>    
                     <ProtectedRoute path="/profile/orders" exact={true}>
-                        <ProfileHistory />
+                        <div className={profileStyle.orders_history} >
+                            <OrdersList isShow={false}/>
+                        </div>
                     </ProtectedRoute>    
-                </Switch>  
+                </Switch>
+                { background && (
+                    <ProtectedRoute path='/profile/orders/:id' exact={true}>
+                        <Modal onClose={ingredientModalClose}> 
+                            <OrderInfo/>
+                        </Modal>
+                    </ProtectedRoute>
+                )}  
             </div>
         </Router>
     );
 };
-
 export default Profile;

@@ -3,7 +3,7 @@ import { useEffect,FC } from "react"
 import modal from './modal.module.css'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ModalOverlay from '../modal-overlay/modal-overlay' 
-import { TModalProps } from '../../utils/types'
+import { TModalProps } from '../../services/types/types'
 
 const documentBody = document.querySelector('#modals')
 
@@ -11,8 +11,9 @@ const Modal: FC<TModalProps> = ({onClose, children, title}) => {
 
   useEffect(() => {
       const closeModal = (event: KeyboardEvent): void => {
-        //@ts-ignore
-        event.key === "Escape" && onClose()
+        if(onClose !== undefined) {
+          event.key === "Escape" && onClose()
+        }
       }
       document.addEventListener('keydown', closeModal)
       return () => {

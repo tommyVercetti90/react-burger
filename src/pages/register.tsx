@@ -1,16 +1,16 @@
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState,ChangeEvent,FormEvent } from 'react'
 import login from './login/login.module.css'
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from '../hooks/hooks'; 
 import { registerUser } from '../services/actions/user';
 import { Redirect, Link, useLocation } from 'react-router-dom';
-import { TLocationWithFrom } from "../utils/types";
+import { TLocationWithFrom } from "../services/types/types";
 
 const Register = () => {
     const dispatch = useDispatch();
     const location = useLocation<TLocationWithFrom>();
   
-    const { user, status, registerFailure, registerSuccess, registerRequest } = useSelector((store: any) => store.userReducer);
+    const { user, status, registerFailure, registerSuccess, registerRequest } = useSelector((store) => store.userReducer);
   
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
@@ -18,7 +18,6 @@ const Register = () => {
   
     const postRegister = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        //@ts-ignore
         dispatch(registerUser(name, email, password));
     };
 

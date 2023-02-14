@@ -2,23 +2,20 @@ import {useState,ChangeEvent,FormEvent} from 'react'
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import login from './login/login.module.css'
 import { Link, useHistory, Redirect, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../hooks/hooks';
 import { getForgotPassword } from '../services/actions/reset-password'
-import { TLocationWithFrom } from "../utils/types";
-
+import { TLocationWithFrom } from "../services/types/types";
 const ForgotPassword = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation<TLocationWithFrom>();
-    // eslint-disable-next-line no-mixed-operators
     const [email, setEmail] = useState<string>('');
 
-    const { user } = useSelector((store:any) => store.userReducer);
-    const { forgotRequest, forgotFailed, status } = useSelector((store:any) => store.resetPasswordReducer);
+    const { user } = useSelector((store) => store.userReducer);
+    const { forgotRequest, forgotFailed, status } = useSelector((store) => store.resetPasswordReducer);
 
     const postForgotRequest = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        //@ts-ignore
         dispatch(getForgotPassword(email, history))
     }
 

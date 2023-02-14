@@ -2,13 +2,13 @@ import {useState,useRef,FC} from 'react'
 import burgerIngredients from './burger-ingredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import BurgerIngredientItem from './burger-ingredient-item'
-import {useSelector} from 'react-redux'
+import { useSelector } from '../../hooks/hooks';
 import { Link, useLocation } from 'react-router-dom'
-import { TIngredient } from '../../utils/types'
+import { TIngredient } from '../../services/types/types';
 
 const BurgerIngredients: FC = () => {
     const location = useLocation()
-    const ingredients = useSelector((store:any) => store.ingredientsReducer.ingredients)
+    const { ingredients } = useSelector((store) => store.ingredientsReducer)
     const [currentTab, setCurrentTab] = useState<string>("bun")
     const containerRef = useRef<HTMLHeadingElement>(null)
     const bunsRef = useRef<HTMLHeadingElement>(null)

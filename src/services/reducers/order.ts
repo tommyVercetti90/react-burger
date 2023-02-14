@@ -1,22 +1,32 @@
+
+import type { TOrder } from '../types/types';
+import type { TOrderActions } from '../actions/order'; 
+
 import {
     FETCH_ORDER_SUCCESS,
     FETCH_ORDER_REQUEST,
     FETCH_ORDER_ERROR,
     CLOSE_ORDER} from "../actions/order"
 
-const initialState = {
-    orderDetails: 0,
-    fetchRequestOrder: false,
-    fetchErrorOrder: null
+type TOrderState = {
+  orderDetails: number;
+  fetchRequestOrder: boolean;
+  fetchErrorOrder: boolean;
 }
 
-export const orderReducer = (state = initialState, action) => {
+const initialState: TOrderState = {
+  orderDetails: 0,
+  fetchRequestOrder: false,
+  fetchErrorOrder: false
+}
+
+export const orderReducer = (state = initialState, action: TOrderActions):TOrderState => {
     switch (action.type) {
       case FETCH_ORDER_REQUEST:
         return {
             ...state,
             fetchRequestOrder: true,
-            fetchErrorOrder: null
+            fetchErrorOrder: false
         }           
       case FETCH_ORDER_ERROR:
         return {
@@ -27,7 +37,7 @@ export const orderReducer = (state = initialState, action) => {
       case FETCH_ORDER_SUCCESS: 
           return {
               ...state,
-              orderDetails: action.payload.order.number,
+              orderDetails: action.payload,
               fetchRequestOrder: false
       }
       case CLOSE_ORDER: 

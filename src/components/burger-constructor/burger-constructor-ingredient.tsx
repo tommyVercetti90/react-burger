@@ -1,10 +1,10 @@
 import { FC, useRef } from 'react'
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructor from './burger-constructor.module.css'
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../../hooks/hooks'; 
 import { useDrag, useDrop } from 'react-dnd'
 import { REMOVE_INGREDIENT } from '../../services/actions/constructor'
-import { TIngredient } from '../../utils/types'
+import { TIngredient } from '../../services/types/types';
 import type { Identifier, XYCoord } from 'dnd-core'
 
 type TSelectedIngredientType = TIngredient & { key: number, ingredientUuid: string  }
@@ -28,7 +28,7 @@ const BurgerConstructorIngredient: FC<TConstructorItemProps> = ({ ingredient, in
             payload: ingredientUuid
         })
     }
-    const constructorIngredients = useSelector((store: any) => store.constructorReducer.constructorIngredients)
+    const constructorIngredients = useSelector((store) => store.constructorReducer.constructorIngredients)
     const id = ingredient.ingredientUuid
 
     const ref = useRef<HTMLLIElement>(null)

@@ -1,3 +1,4 @@
+
 import { 
     REGISTER_REQUEST, 
     REGISTER_SUCCESS, 
@@ -14,10 +15,29 @@ import {
     EDIT_USER_REQUEST,
     EDIT_USER_SUCCESS,
     EDIT_USER_FAILED
-   } from '../actions/user';
+  } from '../actions/user';
   
+  import type { TUserActions } from '../actions/user';
+  import type { TUser } from '../types/types';
+
+  type TUserState = {
+    user: TUser | null;
+    status: string | null;
+    registerRequest: boolean;
+    registerSuccess: boolean;
+    registerFailure: boolean;
+    loginRequest: boolean;
+    loginFailure: boolean;
+    logoutRequest: boolean;
+    logoutFailed: boolean;
+    getUserRequest: boolean;
+    getUserFailure: boolean;
+    editUserRequest: boolean;
+    editUserSuccess: boolean;
+    editUserFailure: boolean;
+  };
   
-  const initialState = {
+  const initialState: TUserState = {
     user: null,
     status: null,
     registerRequest: false,
@@ -33,8 +53,8 @@ import {
     editUserSuccess: false,
     editUserFailure: false,
   };
-  
-  export const userReducer = (state = initialState, action) => {
+
+  export const userReducer = (state = initialState, action: TUserActions) => {
     switch (action.type) {
       case REGISTER_REQUEST: {
         return {
@@ -95,6 +115,7 @@ import {
     case LOGOUT_REQUEST: {
       return {
           ...state,
+          user: null,
           logoutRequest: true,
           logoutFailure: false,
       }
@@ -113,7 +134,7 @@ import {
     case LOGOUT_FAILED: {
         return {
             ...state,
-            status: action.message,
+            status: action.err,
             logoutRequest: false,
             logoutFailure: true,
         }

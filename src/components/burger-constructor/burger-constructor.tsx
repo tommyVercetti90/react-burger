@@ -1,16 +1,15 @@
-/* eslint-disable no-lone-blocks */
 import burgerConstructor from './burger-constructor.module.css'
-import { useState, useMemo, FC } from 'react'
+import { useState, useMemo } from 'react'
 import { CurrencyIcon,  ConstructorElement, Button, } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal'
 import BurgerConstructorIngredient from './burger-constructor-ingredient'
 import OrderDetails from '../order-details/order-details'
 import { addIngredientToConstructor, addBunToConstructor, sortIngredients,clearIngredients } from '../../services/actions/constructor'
 import { clearOrderNum, getOrderDetails } from '../../services/actions/order'
-import {useSelector, useDispatch} from 'react-redux'
+import { useDispatch, useSelector } from '../../hooks/hooks'; 
 import { useDrop } from "react-dnd"
 import { useHistory } from 'react-router-dom';
-import { TIngredient } from '../../utils/types'
+import { TIngredient } from '../../services/types/types';
 
 const BurgerConstructor = () => {
     const history = useHistory();
@@ -19,14 +18,12 @@ const BurgerConstructor = () => {
     const ingredients = useSelector((store: any) => store.ingredientsReducer.ingredients)
     const constructorIngredients = useSelector((store: any) => store.constructorReducer.constructorIngredients)
     const bun = useSelector((store: any) => store.constructorReducer.constructorBun)
-    const { user } = useSelector((store: any) => store.userReducer);
+    const { user } = useSelector((store) => store.userReducer);
 
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop(itemId: { _id: string }) {
             const item = ingredients.find((item: { _id: string }) => item._id === itemId._id)
-            console.log(itemId)
-            //@ts-ignore
             item.type === "bun" ? dispatch(addBunToConstructor(item)) : dispatch(addIngredientToConstructor(item))
         }
     })
@@ -48,7 +45,6 @@ const BurgerConstructor = () => {
 
     const openModal: () => void = () => {
         if (user) {
-            //@ts-ignore
             dispatch(getOrderDetails(getIdIngredients()))
             setVisible(true)
         } else {
@@ -62,9 +58,8 @@ const BurgerConstructor = () => {
         setVisible(false)
     }
     
-    //@ts-ignore
-    const moveIngredient = (dragIndex, hoverIndex, constructorIngredients) => {
-        //@ts-ignore
+
+    const moveIngredient = (dragIndex:number, hoverIndex:number, constructorIngredients: TIngredient[]) => {
         dispatch(sortIngredients(dragIndex, hoverIndex, constructorIngredients))
     }
 
