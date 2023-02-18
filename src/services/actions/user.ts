@@ -243,7 +243,7 @@ export const getUserInfo: AppThunk = () => (dispatch: AppDispatch) => {
       dispatch(getUserSuccessAction(res))
     })
     .catch(err => {
-      if (err === 'jwt expired') {
+      if (err.message === 'jwt expired') {
         refreshToken()
         .then(() => dispatch(getUserInfo()))
       } else {
@@ -270,7 +270,7 @@ export const updateUserInfo: AppThunk = (form: TUser) => (dispatch: AppDispatch)
       dispatch({type: EDIT_USER_SUCCESS, user})
     })
     .catch(err => {
-      if (err === 'jwt expired') {
+      if (err.message === 'jwt expired') {
         refreshToken()
         .then(() => dispatch(updateUserInfo(form)))
       } else {
