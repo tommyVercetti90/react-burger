@@ -4,35 +4,38 @@ import { useParams } from 'react-router-dom';
 import { TParams } from '../../services/types/types';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 import { getOrderStatus } from '../../utils/utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TIngredient } from '../../services/types/types';
 import moment from 'moment';
-import { apiRequest } from '../../utils/burger-api';
+import { connect as connectToOrders, disconnect as disconnectFromOrders } from "../../services/actions/ws-orders";
+import { getCookie } from "../../utils/cookie";
+import { USER_ORDERS_URL, ALL_ORDERS_URL } from "../../utils/burger-ws";
 
 export const OrderInfo = () => {
 
   const { id } = useParams<TParams>(); 
   const location = useLocation<{background: Location}>();
-  const background = location.state && location.state.background;
-
-  const { orders: allOrders } = useSelector(store => store.WsOrdersReducer);
-
-  const [orders, setOrders] = useState(allOrders)
+  const dispatch = useDispatch();
+  const { orders } = useSelector(store => store.WsOrdersReducer);
 
   useEffect(() => {
-
-    if (!orders) {
-      apiRequest(`orders/all`)
-        .then(data => setOrders(data))
+    if (!orders && location.pathname === `/feed/${id}`) {
+      dispatch(connectToOrders(ALL_ORDERS_URL))
     } 
-
-  }, [orders, id])
-
+    if (!orders && location.pathname === `/profile/orders/${id}`) {
+      dispatch(connectToOrders(`${USER_ORDERS_URL}?token=${getCookie('accessToken')?.replace('Bearer ','')}`))
+    }
+    return () => {
+      dispatch(disconnectFromOrders());
+    }
+  }, [])
+  
   const order = useMemo(() => {
     return orders?.orders.find(order => order._id === id)
   }, [orders, id]);
-
+  console.log('orders', orders)
+  
   const { ingredients } = useSelector((store) => store.ingredientsReducer);
   const orderIngredients = order?.ingredients.map(oi => ingredients.find((i: { _id: string; }) => i._id === oi)).filter(x => x !== undefined);
 
