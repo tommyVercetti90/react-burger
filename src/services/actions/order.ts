@@ -30,11 +30,15 @@ export type TOrderActions =
   | IPostOrderFailedAction
   | ICloseOrder
 
-export const getOrderDetails = (ingredientsId:string[]) => (dispatch: AppThunk) => {
+export const getOrderDetails = (ingredientsId:string[], token: string| undefined) => (dispatch: AppThunk) => {
     dispatch({type:FETCH_ORDER_REQUEST})
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
       body: JSON.stringify({"ingredients": ingredientsId})
     }  
     apiRequest('orders',requestOptions).then((response)=> {
@@ -42,7 +46,7 @@ export const getOrderDetails = (ingredientsId:string[]) => (dispatch: AppThunk) 
           type: FETCH_ORDER_SUCCESS,
           payload: response.order.number
         })
-      })
+      }) 
       .catch((error) => {
          dispatch({
            type: FETCH_ORDER_ERROR,

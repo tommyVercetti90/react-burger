@@ -1,9 +1,12 @@
 import styles from "./orders-list.module.css";
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components/';
-import { FC, useMemo } from 'react';
-import { useSelector } from "../../hooks/hooks";
+import { FC, useMemo, useEffect } from 'react';
+import { useSelector, useDispatch } from "../../hooks/hooks";
 import { TIngredient } from "../../services/types/types";
 import { getOrderStatus } from "../../utils/utils";
+import { USER_ORDERS_URL } from "../../utils/burger-ws";
+import { connect as connectToOrders, disconnect as disconnectFromOrders } from "../../services/actions/ws-orders";
+import { getCookie } from "../../utils/cookie";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 
 import moment from "moment";
@@ -67,6 +70,14 @@ const OrderCard: FC<TOrderCard> = ({order, isShow}) => {
 
 
 const OrdersList = ({isShow}: {isShow: boolean}) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(connectToOrders(`${USER_ORDERS_URL}?token=${getCookie('accessToken')?.replace('Bearer ','')}`))
+    return () => {
+      dispatch(disconnectFromOrders());
+    }
+  }, [])
 
   const { orders } = useSelector(store => store.WsOrdersReducer)
   const { ingredients } = useSelector((store) => store.ingredientsReducer);

@@ -1,6 +1,6 @@
 import { useLocation, NavLink, useHistory, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { logout } from '../../services/actions/user';
-import { useDispatch, useSelector } from "../../hooks/hooks";
+import { useDispatch } from "../../hooks/hooks";
 import profileStyle from './profile.module.css'
 import ProfileForm from './profile-form'
 import OrdersList from '../../components/orders-list/orders-list';
@@ -8,12 +8,14 @@ import { ProtectedRoute } from "../../components/protected-route/protected-route
 import Modal from '../../components/modal/modal';
 import { resetCurrentIngredient } from '../../services/actions/current-ingredient';
 import { OrderInfo } from '../../components/order-info/order-info';
+import { Location } from 'history'; 
+
 const Profile = () => {
     const history = useHistory()
     const dispatch = useDispatch();
     const location = useLocation<{background: Location}>();
     const background = location.state?.background;
-
+      
     const ingredientModalClose = () => {
         dispatch(resetCurrentIngredient())
         history.goBack();
@@ -58,15 +60,16 @@ const Profile = () => {
                         <div className={profileStyle.orders_history} >
                             <OrdersList isShow={false}/>
                         </div>
-                    </ProtectedRoute>    
-                </Switch>
-                { background && (
-                    <ProtectedRoute path='/profile/orders/:id' exact={true}>
-                        <Modal onClose={ingredientModalClose}> 
-                            <OrderInfo/>
-                        </Modal>
                     </ProtectedRoute>
-                )}  
+                    <ProtectedRoute path='/profile/orders/:id' exact={true}>
+                        <OrderInfo/>
+                    </ProtectedRoute>                    
+                </Switch>
+                <ProtectedRoute path='/profile/orders/:id' exact={true}>
+                    <Modal onClose={ingredientModalClose}> 
+                        <OrderInfo/>
+                    </Modal>
+                </ProtectedRoute>
             </div>
         </Router>
     );

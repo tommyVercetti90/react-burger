@@ -10,7 +10,7 @@ import type { Identifier, XYCoord } from 'dnd-core'
 type TSelectedIngredientType = TIngredient & { key: number, ingredientUuid: string  }
 
 type TConstructorItemProps = {
-    ingredient: TSelectedIngredientType
+    ingredient: TIngredient
     index: number
     moveIngredient: any
 }
@@ -82,6 +82,8 @@ const BurgerConstructorIngredient: FC<TConstructorItemProps> = ({ ingredient, in
 
     drag(drop(ref))
 
+    const newId = ingredient.ingredientUuid ? ingredient.ingredientUuid : ''
+
     return (
         <li
             className={burgerConstructor.listItem}
@@ -91,7 +93,7 @@ const BurgerConstructorIngredient: FC<TConstructorItemProps> = ({ ingredient, in
                 <DragIcon type="primary" />
             </div>
             <ConstructorElement
-                handleClose={()=>onRemoveItem(ingredient.ingredientUuid)}
+                handleClose={()=>onRemoveItem(newId)}
                 text={ingredient.name}
                 price={ingredient.price}
                 thumbnail={ingredient.image_mobile}

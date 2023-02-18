@@ -4,25 +4,16 @@ import { useLocation, NavLink } from 'react-router-dom';
 import { getUserInfo, updateUserInfo } from '../../services/actions/user'
 import profileStyle from './profile.module.css'
 import { useDispatch, useSelector } from "../../hooks/hooks";
-import { USER_ORDERS_URL } from "../../utils/burger-ws";
-import { connect as connectToOrders, disconnect as disconnectFromOrders } from "../../services/actions/ws-orders";
-import { getCookie } from "../../utils/cookie";
+
 import { TUser } from "../../services/types/types";  
 
 const ProfileForm = () => {
     const dispatch = useDispatch();
 
-
-    useEffect(() => {
-      dispatch(connectToOrders(`${USER_ORDERS_URL}?token=${getCookie('accessToken')?.replace('Bearer ','')}`))
-      return () => {
-        dispatch(disconnectFromOrders());
-      }
-    }, [])
-
     const location = useLocation<{background: Location}>();
 
     const { user } = useSelector((store) => store.userReducer);
+    
     const { editUserSuccess } = useSelector((store) => store.userReducer);
 
     const [state, setState] = useState<TUser> ({

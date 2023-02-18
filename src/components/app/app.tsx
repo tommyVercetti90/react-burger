@@ -22,7 +22,7 @@ import { useHistory, useLocation, Switch, Route } from 'react-router-dom';
 import { Location } from 'history'; 
 
 function App() {
-  const dispatch = useDispatch ();
+  const dispatch = useDispatch();
 
   const location = useLocation<{background: Location}>();
   const background = location.state?.background;

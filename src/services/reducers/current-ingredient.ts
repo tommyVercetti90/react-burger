@@ -3,7 +3,7 @@ import type { TCurrentIngredientActions } from '../actions/current-ingredient';
 import type { TIngredient } from '../types/types';
 
 type TCurrentIngredientState = {
-  currentIngredient: Partial<TIngredient>;
+  currentIngredient: Partial<TIngredient> | undefined;
 }
 
 const initialState: TCurrentIngredientState = {
@@ -11,7 +11,7 @@ const initialState: TCurrentIngredientState = {
 }
 
 
-export const currentIngredientReducer = (state = initialState, action: TCurrentIngredientActions) => {
+export const currentIngredientReducer = (state = initialState, action: TCurrentIngredientActions): TCurrentIngredientState => {
   switch (action.type) {
     case SET_CURRENT_INGREDIENT: {
       return {

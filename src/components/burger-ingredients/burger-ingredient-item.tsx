@@ -13,8 +13,7 @@ const BurgerIngredientItem: FC<TIngredient> = ({ _id, name,price,image,type }) =
             bun: store.constructorReducer.constructorBun
         }))
 
-    const[count, setCount] = useState<number>(0)  
-    console.log(constructorIngredients)
+    const[count, setCount] = useState<number>(0)
     const [, dragRef] = useDrag({
         type: "ingredient",
         item: {_id}

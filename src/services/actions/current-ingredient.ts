@@ -5,7 +5,7 @@ export const RESET_CURRENT_INGREDIENT: 'RESET_CURRENT_INGREDIENT' = 'RESET_CURRE
 
 export interface ISetCurrentIngredientAction {
   readonly type: typeof SET_CURRENT_INGREDIENT;
-  readonly currentIngredient: TIngredient;
+  readonly currentIngredient: TIngredient | undefined;
 }
 
 export interface IResetCurrentIngredient {
@@ -16,7 +16,7 @@ export type TCurrentIngredientActions =
   | ISetCurrentIngredientAction
   | IResetCurrentIngredient;
 
-export const setCurrentIngredient = (ingredient: TIngredient): ISetCurrentIngredientAction  => ({
+export const setCurrentIngredient = (ingredient: TIngredient | undefined): ISetCurrentIngredientAction  => ({
   type: SET_CURRENT_INGREDIENT,
   currentIngredient: ingredient
 })

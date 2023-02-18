@@ -55,7 +55,7 @@ export const OrderInfo = () => {
 
   return (
     <div className={styles.container} >
-      <p style={{ alignSelf: background ? 'start' : 'center' }} className={`mb-10 text text_type_digits-default ${styles.number}`}># {order?.number}</p>
+      <p className={`mb-10 text text_type_digits-default ${styles.number}`}># {order?.number}</p>
       <p className="mb-3 text text_type_main-medium">{order?.name}</p>
       <p style={{ color: `${getOrderStatus(order?.status).color}` }}  className="mb-15 text text_type_main-small">{getOrderStatus(order?.status).text}</p>
       <p className="mb-6 text text_type_main-medium">Состав:</p>
