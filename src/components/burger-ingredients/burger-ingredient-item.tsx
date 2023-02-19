@@ -32,6 +32,7 @@ const BurgerIngredientItem: FC<TIngredient> = ({ _id, name,price,image,type }) =
     
     return (
         <li 
+            data-testid="ingredient-card"
             ref={dragRef}
             className={burgerIngredients.menuItem}>
             <img src={image} alt={image} />
