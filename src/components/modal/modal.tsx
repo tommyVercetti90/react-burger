@@ -24,7 +24,7 @@ const Modal: FC<TModalProps> = ({onClose, children, title}) => {
   return createPortal(
       <>
         <div className={modal.modalWrapper}>
-          <div className={`${modal.header} p-10`}>
+          <div className={`${modal.header} p-10`} data-testid="modal">
               <p className='text text_type_main-large'>{title}</p>
               <div className={modal.close}>
                 <CloseIcon type='primary' onClick={onClose}/>              

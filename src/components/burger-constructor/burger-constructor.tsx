@@ -75,6 +75,7 @@ const BurgerConstructor = () => {
     return (
         <section className='pl-4 pt-25'>
             <div
+                data-testid="drag-destination"
                 ref={dropTarget}>
                 {bun ? (<div className='pl-8 pr-4'>
                     <ConstructorElement
