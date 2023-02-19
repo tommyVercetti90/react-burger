@@ -1,32 +1,33 @@
-/* eslint-disable no-lone-blocks */
 import burgerConstructor from './burger-constructor.module.css'
-import { useState, useMemo, FC } from 'react'
+import { useState, useMemo } from 'react'
 import { CurrencyIcon,  ConstructorElement, Button, } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal'
 import BurgerConstructorIngredient from './burger-constructor-ingredient'
 import OrderDetails from '../order-details/order-details'
 import { addIngredientToConstructor, addBunToConstructor, sortIngredients,clearIngredients } from '../../services/actions/constructor'
 import { clearOrderNum, getOrderDetails } from '../../services/actions/order'
-import {useSelector, useDispatch} from 'react-redux'
+import { useDispatch, useSelector } from '../../hooks/hooks'; 
 import { useDrop } from "react-dnd"
 import { useHistory } from 'react-router-dom';
-import { TIngredient } from '../../utils/types'
+import { TIngredient } from '../../services/types/types';
+import { getCookie } from '../../utils/cookie'
 
 const BurgerConstructor = () => {
     const history = useHistory();
     const [visible, setVisible] = useState<boolean>(false)
     const dispatch = useDispatch()
-    const ingredients = useSelector((store: any) => store.ingredientsReducer.ingredients)
-    const constructorIngredients = useSelector((store: any) => store.constructorReducer.constructorIngredients)
-    const bun = useSelector((store: any) => store.constructorReducer.constructorBun)
-    const { user } = useSelector((store: any) => store.userReducer);
+    const ingredients = useSelector((store) => store.ingredientsReducer.ingredients)
+    const constructorIngredients = useSelector((store) => store.constructorReducer.constructorIngredients)
+    const bun = useSelector((store) => store.constructorReducer.constructorBun)
+    const { user } = useSelector((store) => store.userReducer);
+
+    const { fetchRequestOrder, fetchErrorOrder } = useSelector((store) => store.orderReducer)
 
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop(itemId: { _id: string }) {
             const item = ingredients.find((item: { _id: string }) => item._id === itemId._id)
-            console.log(itemId)
-            //@ts-ignore
+            if(item)
             item.type === "bun" ? dispatch(addBunToConstructor(item)) : dispatch(addIngredientToConstructor(item))
         }
     })
@@ -41,17 +42,21 @@ const BurgerConstructor = () => {
       return ingredientsId
     }
 
-    const totalPrice = useMemo(
-      () => 
-        constructorIngredients?.reduce((acc: number, item: { price: number }) => acc + item.price, bun?.price * 2), 
-        [constructorIngredients, bun])
+    const bunPrice = bun ? bun.price : 0
 
+    const totalPrice = useMemo(
+      () =>
+        constructorIngredients?.reduce((acc: number, item: { price: number }) => acc + item.price, bunPrice * 2), 
+        [constructorIngredients, bunPrice])
+    
+    const accessToken =  getCookie('accessToken')
+    
     const openModal: () => void = () => {
         if (user) {
-            //@ts-ignore
-            dispatch(getOrderDetails(getIdIngredients()))
+            
+            dispatch(getOrderDetails(getIdIngredients(),accessToken))
             setVisible(true)
-        } else {
+        } else { 
             history.push({pathname: '/login'});
         }
     }
@@ -62,9 +67,8 @@ const BurgerConstructor = () => {
         setVisible(false)
     }
     
-    //@ts-ignore
-    const moveIngredient = (dragIndex, hoverIndex, constructorIngredients) => {
-        //@ts-ignore
+
+    const moveIngredient = (dragIndex:number, hoverIndex:number, constructorIngredients: TIngredient[]) => {
         dispatch(sortIngredients(dragIndex, hoverIndex, constructorIngredients))
     }
 
@@ -82,7 +86,7 @@ const BurgerConstructor = () => {
                         />            
                 </div>): null}
                 <ul className={`${burgerConstructor.list} ${burgerConstructor.menu}`}>
-                    {constructorIngredients.map((item: TIngredient & { key: number; ingredientUuid: string },index: number) => 
+                    {constructorIngredients.map((item, index: number) => 
                         item.type !== 'bun' &&
                         <BurgerConstructorIngredient
                             index={index}
@@ -115,9 +119,13 @@ const BurgerConstructor = () => {
                     Оформить заказ
                 </Button>
             </div>
-            {visible && (<Modal onClose={closeModal}>
+            {fetchRequestOrder && <Modal title={'Оформляем ваш заказ...'} />}
+            {visible &&  !fetchRequestOrder && !fetchErrorOrder &&(<Modal onClose={closeModal}>
                 <OrderDetails />
             </Modal>)}
+            {fetchErrorOrder &&
+                <Modal title={'Что-то пошло не так :( Попробуйте еще раз'} /> 
+            }
         </section>
     );
 };

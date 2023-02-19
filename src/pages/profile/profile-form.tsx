@@ -1,34 +1,34 @@
 import { Input,PasswordInput,Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState, useEffect,ChangeEvent,FormEvent } from 'react'
+import { useLocation, NavLink } from 'react-router-dom';
 import { getUserInfo, updateUserInfo } from '../../services/actions/user'
 import profileStyle from './profile.module.css'
-import { useDispatch, useSelector } from 'react-redux'
-interface IUser {
-  name: string;
-  email: string;
-  password: string;
-}
+import { useDispatch, useSelector } from "../../hooks/hooks";
+
+import { TUser } from "../../services/types/types";  
 
 const ProfileForm = () => {
     const dispatch = useDispatch();
 
-    const { name, email } = useSelector((store: any) => store.userReducer.user);
-    const { editUserSuccess } = useSelector((store: any) => store.userReducer);
+    const location = useLocation<{background: Location}>();
+
+    const { user } = useSelector((store) => store.userReducer);
     
-    const [state, setState] = useState<IUser> ({
+    const { editUserSuccess } = useSelector((store) => store.userReducer);
+
+    const [state, setState] = useState<TUser> ({
       name: '',
       email: '',
       password: ''
     });
 
     useEffect(() => {
-      //@ts-ignore
       dispatch(getUserInfo());
 
-      if (name && email) {
-        setState({...state, name: name, email: email})
+      if (user?.name && user?.email) {
+        setState({...state, name: user.name, email: user.email})
       }
-    }, [dispatch, name, email]);
+    }, [dispatch, user?.name, user?.email]);
 
     const hadleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
       const target = evt.target;
@@ -41,14 +41,13 @@ const ProfileForm = () => {
       })
     };
 
-    const postForm = (e: FormEvent<HTMLFormElement>) => {
+    const postForm = (e: FormEvent) => {
       e.preventDefault();
-      //@ts-ignore
       dispatch(updateUserInfo(state));
     };
 
     const cancelEdit: () => void = () => {
-      setState({...state, name: name, email: email, password: ''});
+      setState({...state, name: user?.name, email: user?.email, password: ''});
     };
 
     return (
@@ -56,7 +55,7 @@ const ProfileForm = () => {
             <Input
                 type={'text'}
                 onChange={hadleInputChange}
-                value={state.name}
+                value={state.name || ''}
                 extraClass='mb-6'
                 icon={'EditIcon'}
                 name='name'
@@ -65,7 +64,7 @@ const ProfileForm = () => {
                 type={'text'}
                 icon={'EditIcon'}
                 onChange={hadleInputChange}
-                value={state.email}
+                value={state.email || ''}
                 extraClass='mb-6'
                 name='email'
                 placeholder='E-mail'/>
@@ -73,9 +72,9 @@ const ProfileForm = () => {
                 icon={'EditIcon'}
                 onChange={hadleInputChange}
                 name='password'
-                value={state.password}
+                value={state.password || ''}
                 extraClass='mb-6'/>
-            {state.name !== name || state.email !== email ? (
+            {state.name !== user?.name || state.email !== user?.email ? (
                 <>
                     <Button extraClass='mr-6' htmlType="button" type="primary" size="medium" onClick={cancelEdit} >Отмена</Button>
                     <Button htmlType="submit" type="primary" size="medium">Сохранить</Button>

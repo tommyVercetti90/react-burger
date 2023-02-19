@@ -1,25 +1,24 @@
 import { useState,ChangeEvent,FormEvent } from "react"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import loginStyle from './login.module.css'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector, useDispatch } from '../../hooks/hooks';
 import { Link, Redirect, useHistory, useLocation } from 'react-router-dom'
 import { login } from "../../services/actions/user"
-import { TLocationWithFrom } from "../../utils/types";
+import { TLocationWithFrom } from "../../services/types/types";
 
 const Login = () => {
     const dispatch = useDispatch()
-    const { user } = useSelector((store: any) => store.userReducer)
+    const { user } = useSelector((store) => store.userReducer)
     const history = useHistory()
     const location = useLocation<TLocationWithFrom>()
   
     const [password, setPassword] = useState<string>('')
     const [email, setEmail] = useState<string>('')
   
-    const { status, loginFailure } = useSelector((store: any) => store.userReducer)
+    const { status, loginFailure } = useSelector((store) => store.userReducer)
   
     const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        //@ts-ignore
         dispatch(login(email, password, history))
     }
     return (

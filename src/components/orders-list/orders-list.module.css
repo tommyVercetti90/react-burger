@@ -1,0 +1,93 @@
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+
+.card {
+  text-decoration: none;
+  color: white;
+  margin: 0;
+  margin-bottom: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  background: #1C1C21;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04);
+}
+
+.card_head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card_summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card_img {
+  object-fit: cover;
+  width: 64px;
+  height: 64px;
+}
+
+.card_imgbox {
+  display: flex;
+}
+
+.img_border_back {
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  background: #1C1C21;
+}
+
+.img_border {
+  padding: 2px;
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+}
+
+.img_border:not(:first-child) {
+  margin-left: -20px;
+}
+
+.card_total_sum {
+  margin-left: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.orders_list {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.orders_list::-webkit-scrollbar {
+	width: 12px;
+}
+.orders_list::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+.orders_list::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}
+
+.image_text {
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  margin-top: -68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-weight: bold;
+}

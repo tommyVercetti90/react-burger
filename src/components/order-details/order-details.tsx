@@ -1,9 +1,9 @@
 import orderDetails  from './order-details.module.css'
 import checkImage from '../../images/check.svg'
-import {useSelector} from 'react-redux'
+import { useSelector } from '../../hooks/hooks';
 
 const OrderDetails = () => {
-    const order = useSelector((store:any) => store.orderReducer.orderDetails)    
+    const order = useSelector((store) => store.orderReducer.orderDetails)    
     
     return (
         <div className={`${orderDetails.wrapper} pt-10 pr-25 pb-30 pl-25`}>

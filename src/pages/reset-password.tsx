@@ -1,10 +1,10 @@
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import login from './login/login.module.css'
 import {useState,ChangeEvent,FormEvent} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector, useDispatch } from '../hooks/hooks';
 import { Redirect, Link, useHistory, useLocation } from 'react-router-dom'
 import { postResetPassword } from "../services/actions/reset-password" 
-import { TLocationWithFrom } from "../utils/types"
+import { TLocationWithFrom } from "../services/types/types";
 
 const ResetPassword = () => {
     const history = useHistory()
@@ -12,14 +12,13 @@ const ResetPassword = () => {
   
     const dispatch = useDispatch()
   
-    const { resetFailure, resetSuccess, fargotSuccess, resetRequest, status } = useSelector((store: any) => store.resetPasswordReducer)
+    const { resetFailure, resetSuccess, fargotSuccess, resetRequest, status } = useSelector((store) => store.resetPasswordReducer)
   
     const [password, setPassword] = useState<string>('')
     const [emailCode, setEmailCode] = useState<string>('')
   
     const postNewPassword = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        //@ts-ignore
         dispatch(postResetPassword(password, emailCode, history))
     }
 

@@ -1,6 +1,6 @@
 import modalOverlay from './modal-overlay.module.css'
 import { FC } from 'react';
-import { TModalProps } from '../../utils/types';
+import { TModalProps } from '../../services/types/types';
 
 const ModalOverlay: FC<TModalProps> = ({  onClose }) => {
   return (

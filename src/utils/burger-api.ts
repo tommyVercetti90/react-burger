@@ -5,7 +5,7 @@ export const checkResponse = (res: Response) => {
   if (res.ok) {
       return res.json();
   }
-  return Promise.reject(`Ошибка ${res}`);
+  return res.json().then((error: { success: boolean; message: string; }) => Promise.reject(error));
 }
 
 export const apiRequest = (url: string, options?: {}) => {

@@ -1,3 +1,5 @@
+import type { TResetPasswordActions } from '../actions/reset-password';
+
 import {
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_SUCCESS,
@@ -7,7 +9,16 @@ import {
     FORGOT_PASSWORD_FAILED
   } from '../actions/reset-password';
   
-  const initialState = {
+  type TResetPasswortState = {
+    status: string | null;
+    forgotRequest: boolean;
+    fargotSuccess: boolean;
+    forgotFailed: boolean;
+    resetRequest: boolean;
+    resetSuccess: boolean;
+    resetFailure: boolean;}
+  
+  const initialState: TResetPasswortState = {
     status: null,
     forgotRequest: false,
     fargotSuccess: false,
@@ -16,8 +27,8 @@ import {
     resetSuccess: false,
     resetFailure: false
   }
-  
-  export const resetPasswordReducer = (state = initialState, action) => {
+
+  export const resetPasswordReducer = (state = initialState, action: TResetPasswordActions) => {
     switch (action.type) {
       case FORGOT_PASSWORD_REQUEST: {
         return {

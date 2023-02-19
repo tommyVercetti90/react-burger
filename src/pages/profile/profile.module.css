@@ -29,3 +29,7 @@
     opacity: 0;
     transition: 3s;
 }
+.orders_history {
+    width: 100%;
+    height: 720px;
+  }

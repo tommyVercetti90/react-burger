@@ -1,3 +1,6 @@
+import type { TIngredient } from '../types/types';
+import type { TConstructor } from '../actions/constructor'; 
+
 import {
     ADD_BUN,
     ADD_INGREDIENT,
@@ -5,13 +8,20 @@ import {
     SORT_INGREDIENTS,
     CLEAR_INGREDIENTS } from "../actions/constructor"
 
-const initialState = {
-    constructorIngredients: [],
-    constructorBun: null,
-    ingredient: null,
+type TSelectedIngredientsState = {
+  constructorIngredients: TIngredient[];
+  constructorBun: TIngredient | null;
+  ingredient: TIngredient | null;
 }
 
-export const constructorReducer = (state = initialState, action) => {
+const initialState: TSelectedIngredientsState = {
+  constructorIngredients: [],
+  constructorBun: null,
+  ingredient: null,
+}
+
+
+export const constructorReducer = (state = initialState, action: TConstructor):TSelectedIngredientsState => {
     switch (action.type) {
       case ADD_BUN: {
         return {
