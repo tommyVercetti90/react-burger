@@ -18,7 +18,7 @@ import {
     resetSuccess: boolean;
     resetFailure: boolean;}
   
-  const initialState: TResetPasswortState = {
+ export  const initialState: TResetPasswortState = {
     status: null,
     forgotRequest: false,
     fargotSuccess: false,
@@ -43,7 +43,7 @@ import {
       case FORGOT_PASSWORD_SUCCESS: {
         return {
           ...state,
-          status: action.status.message,
+          status: action.status,
           forgotRequest: false,
           fargotSuccess: true,
           forgotFailed: false
@@ -72,7 +72,7 @@ import {
       case RESET_PASSWORD_SUCCESS: {
         return {
           ...state,
-          status: action.status.message,
+          status: action.status,
           resetSuccess: true,
           resetRequest: false,
           resetFailure: false

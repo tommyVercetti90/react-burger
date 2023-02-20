@@ -29,7 +29,7 @@ import {
     loginRequest: boolean;
     loginFailure: boolean;
     logoutRequest: boolean;
-    logoutFailed: boolean;
+    logoutFailure: boolean;
     getUserRequest: boolean;
     getUserFailure: boolean;
     editUserRequest: boolean;
@@ -37,7 +37,7 @@ import {
     editUserFailure: boolean;
   };
   
-  const initialState: TUserState = {
+export const initialState: TUserState = {
     user: null,
     status: null,
     registerRequest: false,
@@ -46,7 +46,7 @@ import {
     loginRequest: false,
     loginFailure: false,
     logoutRequest: false,
-    logoutFailed: false,
+    logoutFailure: false,
     getUserRequest: false,
     getUserFailure: false,
     editUserRequest: false,
@@ -54,7 +54,7 @@ import {
     editUserFailure: false,
   };
 
-  export const userReducer = (state = initialState, action: TUserActions) => {
+  export const userReducer = (state = initialState, action: TUserActions):TUserState => {
     switch (action.type) {
       case REGISTER_REQUEST: {
         return {

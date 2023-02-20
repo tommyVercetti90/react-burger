@@ -14,7 +14,7 @@ type TSelectedIngredientsState = {
   ingredient: TIngredient | null;
 }
 
-const initialState: TSelectedIngredientsState = {
+export const initialState: TSelectedIngredientsState = {
   constructorIngredients: [],
   constructorBun: null,
   ingredient: null,

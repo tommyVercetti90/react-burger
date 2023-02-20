@@ -10,8 +10,6 @@ const ProfileOrders = () => {
     const dispatch = useDispatch();
 
     const {user} = useSelector(store => store.userReducer)
-
-    console.log(user)
   
     useEffect(() => {
         dispatch(connectToOrders(`${USER_ORDERS_URL}?token=${getCookie('accessToken')?.replace('Bearer ','')}`))

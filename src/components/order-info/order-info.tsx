@@ -34,7 +34,6 @@ export const OrderInfo = () => {
   const order = useMemo(() => {
     return orders?.orders.find(order => order._id === id)
   }, [orders, id]);
-  console.log('orders', orders)
   
   const { ingredients } = useSelector((store) => store.ingredientsReducer);
   const orderIngredients = order?.ingredients.map(oi => ingredients.find((i: { _id: string; }) => i._id === oi)).filter(x => x !== undefined);

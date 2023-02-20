@@ -6,7 +6,7 @@ type TCurrentIngredientState = {
   currentIngredient: Partial<TIngredient> | undefined;
 }
 
-const initialState: TCurrentIngredientState = {
+export const initialState: TCurrentIngredientState = {
   currentIngredient: {}
 }
 
