@@ -1,6 +1,6 @@
 import {testURL} from '../../src/services/constants'
 import {email, password} from '../../src/utils/auth-test-data'
-
+import { ingredientCard,dragDestination } from '../../src/services/constants';
 describe('make order', function() {
     before(() => {
       cy.visit(testURL);
@@ -13,14 +13,14 @@ describe('make order', function() {
         cy.get("[type=password]").type(password)
         cy.get("button").click()
 
-        cy.get("[data-testid=ingredient-card]").first().trigger("dragstart").trigger("dragleave");
-        cy.get("[data-testid=drag-destination]").trigger("dragenter")
+        cy.get(`[data-testid=${ingredientCard}]`).first().trigger("dragstart").trigger("dragleave");
+        cy.get(`[data-testid=${dragDestination}]`).trigger("dragenter")
         .trigger("dragover")
         .trigger("drop")
         .trigger("dragend")
 
-        cy.get("[data-testid=ingredient-card]").eq(3).trigger("dragstart").trigger("dragleave");
-        cy.get("[data-testid=drag-destination]").trigger("dragenter")
+        cy.get(`[data-testid=${ingredientCard}]`).eq(3).trigger("dragstart").trigger("dragleave");
+        cy.get(`[data-testid=${dragDestination}]`).trigger("dragenter")
         .trigger("dragover")
         .trigger("drop")
         .trigger("dragend")
@@ -39,7 +39,7 @@ describe('ingredient modal', function() {
     });
 
     it("should open and close ingredient modal", () => {
-        cy.get("[data-testid=ingredient-card]").first().click();
+        cy.get(`[data-testid=${ingredientCard}]`).first().click();
         cy.get("[data-testid=modal]").children().last().click()
     })
 }); 
