@@ -50,9 +50,6 @@ function App() {
                 <Route path="/" exact={true}>
                   <MainPage />
                 </Route>
-                <Route path="/react-burger" exact={true}>
-                  <MainPage />
-                </Route>
                 <Route path='/feed' exact={true}>
                   <Feed />
                </Route>
