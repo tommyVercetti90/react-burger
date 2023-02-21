@@ -50,6 +50,9 @@ function App() {
                 <Route path="/" exact={true}>
                   <MainPage />
                 </Route>
+                <Route path="/react-burger" exact={true}>
+                  <MainPage />
+                </Route>
                 <Route path='/feed' exact={true}>
                   <Feed />
                </Route>
@@ -80,7 +83,7 @@ function App() {
                 <Route path='/feed/:id' exact={true}>
                   <OrderInfo/>
                 </Route>                
-                <Route path="*">
+                <Route>
                   <NotFoundPage />
                 </Route>
               </Switch>
