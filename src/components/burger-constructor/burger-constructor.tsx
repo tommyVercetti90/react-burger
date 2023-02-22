@@ -11,6 +11,7 @@ import { useDrop } from "react-dnd"
 import { useHistory } from 'react-router-dom';
 import { TIngredient } from '../../services/types/types';
 import { getCookie } from '../../utils/cookie'
+import { dragDestination } from '../../services/constants'
 
 const BurgerConstructor = () => {
     const history = useHistory();
@@ -75,7 +76,7 @@ const BurgerConstructor = () => {
     return (
         <section className='pl-4 pt-25'>
             <div
-                data-testid="drag-destination"
+                data-testid={dragDestination}
                 ref={dropTarget}>
                 {bun ? (<div className='pl-8 pr-4'>
                     <ConstructorElement

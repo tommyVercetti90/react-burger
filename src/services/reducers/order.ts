@@ -14,7 +14,7 @@ type TOrderState = {
   fetchErrorOrder: boolean;
 }
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   orderDetails: 0,
   fetchRequestOrder: false,
   fetchErrorOrder: false

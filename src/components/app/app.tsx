@@ -80,7 +80,7 @@ function App() {
                 <Route path='/feed/:id' exact={true}>
                   <OrderInfo/>
                 </Route>                
-                <Route path="*">
+                <Route>
                   <NotFoundPage />
                 </Route>
               </Switch>

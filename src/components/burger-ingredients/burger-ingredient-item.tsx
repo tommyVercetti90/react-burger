@@ -4,7 +4,7 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDrag } from "react-dnd"
 import { useSelector } from '../../hooks/hooks';
 import { TIngredient } from '../../services/types/types';
-
+import { ingredientCard } from '../../services/constants';
 
 const BurgerIngredientItem: FC<TIngredient> = ({ _id, name,price,image,type }) => {
     const {constructorIngredients, bun} = useSelector((store) => 
@@ -32,7 +32,7 @@ const BurgerIngredientItem: FC<TIngredient> = ({ _id, name,price,image,type }) =
     
     return (
         <li 
-            data-testid="ingredient-card"
+            data-testid={ingredientCard}
             ref={dragRef}
             className={burgerIngredients.menuItem}>
             <img src={image} alt={image} />
